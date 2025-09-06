@@ -3,7 +3,8 @@
 Grid::Grid(Vector2f windowsize)
 {
 	Grid_Init(windowsize);
-	mousepressed = false;
+	leftMousepressed = false;
+	rightMousepressed = false;
 	shaderclock.restart();
 }
 
@@ -138,15 +139,16 @@ void Grid::Grid_UpdateShaders()
 	bottomsectionshader.setUniform("time", time);
 }
 
-void Grid::Grid_Update(Vector2f Mousepos,Vector2f windowsize, float dt)
+void Grid::Grid_Update(Vector2f Mousepos,Vector2f windowsize, float dt, Stats* stats)
 {
 	Grid_UpdateShaders();
 
+	// Place towers
 	if (Mouse::isButtonPressed(Mouse::Button::Left))
 	{
-		if (!mousepressed)
+		if (!leftMousepressed)
 		{
-			mousepressed = true;
+			leftMousepressed = true;
 			for (size_t m = 0; m < buildplots.size(); m++)
 			{
 				if (buildplots[m].shape.getGlobalBounds().contains(Mousepos) && (!buildplots[m].build))
@@ -163,16 +165,28 @@ void Grid::Grid_Update(Vector2f Mousepos,Vector2f windowsize, float dt)
 						switch (m)
 						{
 						case 0:
-							towers.push_back(new Turret(buildplots[Index_].shape.getPosition(), buildplots[Index_].shape.getSize(),windowsize.y / 2.5));
-							buildplots[Index_].build = true;
+							if (stats->resources.copper >= _TURRET_T_PRICE)
+							{
+								stats->resources.copper = stats->resources.copper - _TURRET_T_PRICE;
+								towers.push_back(new Turret(buildplots[Index_].shape.getPosition(), buildplots[Index_].shape.getSize(), windowsize.y / 2.5));
+								buildplots[Index_].build = true;
+							}
 							break;
 						case 1:
-							towers.push_back(new Rocket(buildplots[Index_].shape.getPosition(), buildplots[Index_].shape.getSize(), windowsize.y / 5));
-							buildplots[Index_].build = true;
+							if (stats->resources.copper >= _ROCKET_T_PRICE)
+							{
+								stats->resources.copper = stats->resources.copper - _ROCKET_T_PRICE;
+								towers.push_back(new Rocket(buildplots[Index_].shape.getPosition(), buildplots[Index_].shape.getSize(), windowsize.y / 5));
+								buildplots[Index_].build = true;
+							}
 							break;
 						case 2:
-							towers.push_back(new Sniper(buildplots[Index_].shape.getPosition(), buildplots[Index_].shape.getSize(), windowsize.y / 0.5));
-							buildplots[Index_].build = true;
+							if (stats->resources.copper >= _SNIPER_T_PRICE)
+							{
+								stats->resources.copper = stats->resources.copper - _SNIPER_T_PRICE;
+								towers.push_back(new Sniper(buildplots[Index_].shape.getPosition(), buildplots[Index_].shape.getSize(), windowsize.y / 0.5));
+								buildplots[Index_].build = true;
+							}
 							break;
 						case 3:
 							break;
@@ -188,7 +202,33 @@ void Grid::Grid_Update(Vector2f Mousepos,Vector2f windowsize, float dt)
 	}
 	else
 	{
-		mousepressed = false;
+		leftMousepressed = false;
+	}
+
+	// Upgrade towers
+	if (Mouse::isButtonPressed(Mouse::Button::Right))
+	{
+		if (!rightMousepressed)
+		{
+			rightMousepressed = true;
+			for (size_t m = 0; m < towers.size(); m++)
+			{
+				if (towers[m]->shape.getGlobalBounds().contains(Mousepos))
+				{
+					if (stats->resources.copper >= towers[m]->upgradePrice)
+					{
+						stats->resources.copper = stats->resources.copper - towers[m]->upgradePrice;
+						towers[m]->level++;
+						towers[m]->Tower_UpdateDamage();
+					}
+				}
+			}
+
+		}
+	}
+	else
+	{
+		rightMousepressed = false;
 	}
 
 	// Update towers

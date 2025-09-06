@@ -103,7 +103,7 @@ void Game::LoadGame()
 	}
 
 	// Place towers
-	for (size_t i = 0; i < TOWER_AMOUNT; i++)
+	for (size_t i = 0; i < TOWER_AMOUNT_; i++)
 	{
 
 		switch (player->stats.towerstats[i].type)
@@ -111,14 +111,20 @@ void Game::LoadGame()
 		case 'T':
 			grid->towers.push_back(new Turret({ player->stats.towerstats[i].x ,player->stats.towerstats[i].y },
 				{ player->stats.towerstats[i].sizeX ,player->stats.towerstats[i].sizeY }, GetWindowSize().y / 2.5));
+			grid->towers[i]->level = player->stats.towerstats[i].towerlevel;
+			grid->towers[i]->Tower_UpdateDamage();
 			break;
 		case 'S':
 			grid->towers.push_back(new Sniper({ player->stats.towerstats[i].x ,player->stats.towerstats[i].y },
 				{ player->stats.towerstats[i].sizeX ,player->stats.towerstats[i].sizeY }, GetWindowSize().y / 0.5));
+			grid->towers[i]->level = player->stats.towerstats[i].towerlevel;
+			grid->towers[i]->Tower_UpdateDamage();
 			break;
 		case 'R':
 			grid->towers.push_back(new Rocket({ player->stats.towerstats[i].x ,player->stats.towerstats[i].y },
 				{ player->stats.towerstats[i].sizeX ,player->stats.towerstats[i].sizeY }, GetWindowSize().y / 5));
+			grid->towers[i]->level = player->stats.towerstats[i].towerlevel;
+			grid->towers[i]->Tower_UpdateDamage();
 			break;
 		default:
 			break;
@@ -139,6 +145,7 @@ void Game::SaveGame()
 		player->stats.towerstats[i].sizeX = grid->towers[i]->shape.getSize().x;
 		player->stats.towerstats[i].sizeY = grid->towers[i]->shape.getSize().y;
 		player->stats.towerstats[i].type = grid->towers[i]->type;
+		player->stats.towerstats[i].towerlevel = grid->towers[i]->level;
 	}
 
 	// Treat as char*
@@ -249,8 +256,8 @@ void Game::Update()
 		EntitySpawn();
 
 		player->Player_Update(GetWindowSize());
-		grid->Grid_Update(GetMousePos(), GetWindowSize(), dt);
-
+		grid->Grid_Update(GetMousePos(), GetWindowSize(), dt,&player->stats);
+		
 		for (size_t index = 0; index < entities.size(); index++)
 		{
 			entities[index]->ChangeDirection(GetWindowSize());

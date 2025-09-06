@@ -9,11 +9,11 @@ class Bullet
 {
 public:
 	CircleShape shape;
-	uint8_t damage;
+	uint32_t damage;
 	float speed;
 	bool hitenemy;
 
-	Bullet(float radius, Vector2f windowsize, uint8_t dmg, float spd)
+	Bullet(float radius, Vector2f windowsize, uint32_t dmg, float spd)
 		: speed(spd), damage(dmg)
 	{
 

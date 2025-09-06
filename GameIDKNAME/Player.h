@@ -6,7 +6,7 @@
 
 using namespace sf;
 #define STATS_POS_INDEX		12
-#define TOWER_AMOUNT		14
+#define TOWER_AMOUNT_		14
 
 struct Stats
 {
@@ -33,7 +33,7 @@ struct Stats
 		float sizeY;
 		char type;
 		uint8_t towerlevel;
-	} towerstats[TOWER_AMOUNT];
+	} towerstats[TOWER_AMOUNT_];
 };
 
 class Player

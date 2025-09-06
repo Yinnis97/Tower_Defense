@@ -10,9 +10,13 @@ void Tower::Tower_Init_Variables(Vector2f pos, Vector2f size)
 	shape.setPosition(pos);
 	shape.setTexture(&texture);
 	center = shape.getPosition() + Vector2f{ size.x/2, size.y/2 };
-	lastshot = 0.0f;
-
 	clock.restart();
+}
+
+void Tower::Tower_UpdateDamage()
+{
+	damage = damage + (level);
+	std::cout << static_cast<uint16_t>(damage) << std::endl;
 }
 
 void Tower::Tower_Shoot(Vector2f windowsize, float dt)

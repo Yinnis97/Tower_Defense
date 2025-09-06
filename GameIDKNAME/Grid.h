@@ -6,6 +6,7 @@
 #include "Rocket.h"
 #include "Sniper.h"
 #include "Turret.h"
+#include "Player.h"
 
 using namespace sf;
 
@@ -14,6 +15,10 @@ using namespace sf;
 #define TOWER_START_POS		50
 #define TOWER_SPACE			14
 #define TOWER_TYPES			3
+
+#define _TURRET_T_PRICE		10
+#define _SNIPER_T_PRICE		20
+#define _ROCKET_T_PRICE		30
 
 struct buildplot
 {
@@ -25,7 +30,8 @@ struct buildplot
 class Grid
 {
 private:
-	bool mousepressed;
+	bool leftMousepressed;
+	bool rightMousepressed;
 
 public:
 	std::vector<Tower*> towers;
@@ -67,7 +73,7 @@ public:
 	void Grid_LoadShaders(Vector2f windowsize);
 	void Grid_SelectTower(Vector2f Mousepos, Vector2f windowsize, size_t index);
 	void Grid_UpdateShaders();
-	void Grid_Update(Vector2f Mousepos, Vector2f windowsize, float dt);
+	void Grid_Update(Vector2f Mousepos, Vector2f windowsize, float dt, Stats* stats);
 	void Grid_Render(RenderWindow* window);
 };
 
