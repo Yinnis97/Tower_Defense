@@ -15,12 +15,12 @@ using namespace sf;
 #define TOWER_SPACE			14
 #define TOWER_TYPES			3
 
-typedef struct
+struct buildplot
 {
 	RectangleShape shape;
 	bool build;
 	char type;
-}buildplot;
+};
 
 class Grid
 {

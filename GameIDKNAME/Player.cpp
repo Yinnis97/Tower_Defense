@@ -20,15 +20,15 @@ void Player::Player_Init(Vector2f windowsize)
 	Color color_yellow_sapphire(224,232,0,255);
 	Color color_orange_sapphire(225, 110, 0,255);
 
-	resources.gold = 10;
-	resources.silver = 100;
-	resources.copper = 1000;
-	health = 1000;
+	stats.resources.gold = 10;
+	stats.resources.silver = 100;
+	stats.resources.copper = 1000;
+	stats.health = 1000;
 
-	resources.blue_sapphire = 0;
-	resources.green_sapphire = 0;
-	resources.yellow_sapphire = 0;
-	resources.orange_sapphire = 0;
+	stats.resources.blue_sapphire = 0;
+	stats.resources.green_sapphire = 0;
+	stats.resources.yellow_sapphire = 0;
+	stats.resources.orange_sapphire = 0;
 
 	if (!font.openFromFile("Fonts/PixeloidSans.ttf"))
 	{
@@ -92,16 +92,16 @@ void Player::Player_Proccess_Loot(Vector2u loot)
 	switch (loot.x)
 	{
 	case 1:
-		resources.blue_sapphire = resources.blue_sapphire + loot.y;
+		stats.resources.blue_sapphire = stats.resources.blue_sapphire + loot.y;
 		break;
 	case 2:
-		resources.green_sapphire = resources.green_sapphire + loot.y;
+		stats.resources.green_sapphire = stats.resources.green_sapphire + loot.y;
 		break;
 	case 3:
-		resources.yellow_sapphire = resources.yellow_sapphire + loot.y;
+		stats.resources.yellow_sapphire = stats.resources.yellow_sapphire + loot.y;
 		break;
 	case 4:
-		resources.orange_sapphire = resources.orange_sapphire + loot.y;
+		stats.resources.orange_sapphire = stats.resources.orange_sapphire + loot.y;
 		break;
 	}
 }
@@ -109,15 +109,15 @@ void Player::Player_Proccess_Loot(Vector2u loot)
 void Player::Player_Update(Vector2f windowsize)
 {
 	std::stringstream ss_gold, ss_silver, ss_copper, ss_health, ss_b_sapphire, ss_g_sapphire, ss_y_sapphire, ss_o_sapphire; 
-	ss_gold << "Gold: " << resources.gold << std::endl;
-	ss_silver << "Silver: " << resources.silver << std::endl;
-	ss_copper << "Copper: " << resources.copper << std::endl;
-	ss_health << "Health: " << health << std::endl;
+	ss_gold << "Gold: " << stats.resources.gold << std::endl;
+	ss_silver << "Silver: " << stats.resources.silver << std::endl;
+	ss_copper << "Copper: " << stats.resources.copper << std::endl;
+	ss_health << "Health: " << stats.health << std::endl;
 
-	ss_b_sapphire << "Blue Sapphire: " << resources.blue_sapphire << std::endl;
-	ss_g_sapphire << "Green Sapphire: " << resources.green_sapphire << std::endl;
-	ss_y_sapphire << "Yellow Sapphire: " << resources.yellow_sapphire << std::endl;
-	ss_o_sapphire << "Orange Sapphire: " << resources.orange_sapphire << std::endl;
+	ss_b_sapphire << "Blue Sapphire: " << stats.resources.blue_sapphire << std::endl;
+	ss_g_sapphire << "Green Sapphire: " << stats.resources.green_sapphire << std::endl;
+	ss_y_sapphire << "Yellow Sapphire: " << stats.resources.yellow_sapphire << std::endl;
+	ss_o_sapphire << "Orange Sapphire: " << stats.resources.orange_sapphire << std::endl;
 
 	gold_text->setString(ss_gold.str());
 	silver_text->setString(ss_silver.str());

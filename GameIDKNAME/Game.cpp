@@ -91,16 +91,38 @@ void Game::LoadGame()
 	std::ifstream file("Saves/save.dat", std::ios::binary);
 
 	// Treat as char*
-	char* data = reinterpret_cast<char*>(&player->resources);
-	size_t dataSize = sizeof(Resources);
-
+	char* data_player = reinterpret_cast<char*>(&player->stats);
+	size_t dataSize_player = sizeof(Stats);
 	// Read file
-	file.read(data, dataSize);
+	file.read(data_player, dataSize_player);
 
 	// Decryption
-	for (size_t i = 0; i < dataSize; i++)
+	for (size_t i = 0; i < dataSize_player; i++)
 	{
-		data[i] ^= key;
+		data_player[i] ^= key;
+	}
+
+	// Place towers
+	for (size_t i = 0; i < TOWER_AMOUNT; i++)
+	{
+
+		switch (player->stats.towerstats[i].type)
+		{
+		case 'T':
+			grid->towers.push_back(new Turret({ player->stats.towerstats[i].x ,player->stats.towerstats[i].y },
+				{ player->stats.towerstats[i].sizeX ,player->stats.towerstats[i].sizeY }, GetWindowSize().y / 2.5));
+			break;
+		case 'S':
+			grid->towers.push_back(new Sniper({ player->stats.towerstats[i].x ,player->stats.towerstats[i].y },
+				{ player->stats.towerstats[i].sizeX ,player->stats.towerstats[i].sizeY }, GetWindowSize().y / 0.5));
+			break;
+		case 'R':
+			grid->towers.push_back(new Rocket({ player->stats.towerstats[i].x ,player->stats.towerstats[i].y },
+				{ player->stats.towerstats[i].sizeX ,player->stats.towerstats[i].sizeY }, GetWindowSize().y / 5));
+			break;
+		default:
+			break;
+		}
 	}
 }
 
@@ -109,18 +131,28 @@ void Game::SaveGame()
 	char key = 0xA5;
 	std::ofstream file("Saves/save.dat", std::ios::binary);
 
+	// Get placed towers
+	for (size_t i = 0; i < grid->towers.size(); i++)
+	{
+		player->stats.towerstats[i].x = grid->towers[i]->shape.getPosition().x;
+		player->stats.towerstats[i].y = grid->towers[i]->shape.getPosition().y;
+		player->stats.towerstats[i].sizeX = grid->towers[i]->shape.getSize().x;
+		player->stats.towerstats[i].sizeY = grid->towers[i]->shape.getSize().y;
+		player->stats.towerstats[i].type = grid->towers[i]->type;
+	}
+
 	// Treat as char*
-	char* data = reinterpret_cast<char*>(&player->resources);
-	size_t dataSize = sizeof(Resources);
+	char* data_player = reinterpret_cast<char*>(&player->stats);
+	size_t dataSize_player = sizeof(Stats);
 
 	// Encryption
-	for (size_t i = 0; i < dataSize; i++)
+	for (size_t i = 0; i < dataSize_player; i++)
 	{
-		data[i] ^= key;
+		data_player[i] ^= key;
 	}
 
 	// Write to file
-	file.write(data, dataSize);
+	file.write(data_player, dataSize_player);
 }
 
 void Game::EntitySpawn()
@@ -172,10 +204,10 @@ void Game::EntityHitDetection(size_t index)
 		switch (entities[index]->GetID())
 		{
 		case 'E':
-			player->resources.copper = player->resources.copper + 1;
+			player->stats.resources.copper = player->stats.resources.copper + 1;
 			break;
 		case 'B':
-			player->resources.gold = player->resources.gold + 1;
+			player->stats.resources.gold = player->stats.resources.gold + 1;
 			break;
 		default:
 			std::cout << "Error at switch case entities GetID\n";
@@ -193,7 +225,7 @@ void Game::EntityEscaped(size_t index)
 	if (entities[index]->sprite->getPosition().x < 0)
 	{
 		entities.erase(entities.begin() + index);
-		player->health = player->health - 1;
+		player->stats.health = player->stats.health - 1;
 	}
 }
 

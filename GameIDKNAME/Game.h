@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 #include "math.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -9,7 +10,7 @@
 #include "Grid.h"
 #include "Player.h"
 #include "Menu.h"
-#include <fstream>
+
 
 using namespace sf;
 

@@ -5,17 +5,35 @@
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
-#define STATS_POS_INDEX 12
+#define STATS_POS_INDEX		12
+#define TOWER_AMOUNT		14
 
-struct Resources
+struct Stats
 {
-	uint32_t gold;
-	uint32_t silver;
-	uint32_t copper;
-	uint32_t blue_sapphire;
-	uint32_t green_sapphire;
-	uint32_t yellow_sapphire;
-	uint32_t orange_sapphire;
+	uint16_t xp;
+	uint16_t level;
+	uint16_t health;
+
+	struct Resources
+	{
+		uint32_t gold;
+		uint32_t silver;
+		uint32_t copper;
+		uint32_t blue_sapphire;
+		uint32_t green_sapphire;
+		uint32_t yellow_sapphire;
+		uint32_t orange_sapphire;
+	} resources;
+
+	struct TowerStats
+	{
+		float x;
+		float y;
+		float sizeX;
+		float sizeY;
+		char type;
+		uint8_t towerlevel;
+	} towerstats[TOWER_AMOUNT];
 };
 
 class Player
@@ -24,9 +42,8 @@ private:
 
 public:
 
-	Resources resources;
-
-	uint16_t health;
+	Stats stats;
+	
 	Font font;
 	float spacing;
 	

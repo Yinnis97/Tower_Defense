@@ -17,11 +17,11 @@ private:
 	float firerate;
 	float speed;
 	float radius;
-	char type;
 	Clock clock;
 	float lastshot;
 
 public:
+	char type;
 	RectangleShape shape;
 	Texture texture;
 	std::vector<Bullet> bullets;
