@@ -16,6 +16,7 @@ void Game::Init_Var()
 	window = nullptr;
 	mouseheld = false;
 	inMenu = true;
+	paused = false;
 	loadGame = false;
 	spawninterval = 0.0f;
 	dt = dt_clock.restart().asSeconds();
@@ -61,8 +62,7 @@ void Game::Pollevents()
 			case Keyboard::Scancode::P:
 				if (!inMenu)
 				{
-					SaveGame();
-					inMenu = true;
+					paused = !paused;
 				}
 				break;
 			}
@@ -105,7 +105,8 @@ void Game::LoadGame()
 	// Place towers
 	for (size_t i = 0; i < TOWER_AMOUNT_; i++)
 	{
-
+		grid->buildplots[i].build = player->stats.towerstats[i].towerplaced;
+		std::cout << grid->buildplots[i].build << std::endl;
 		switch (player->stats.towerstats[i].type)
 		{
 		case 'T':
@@ -137,6 +138,11 @@ void Game::SaveGame()
 	char key = 0xA5;
 	std::ofstream file("Saves/save.dat", std::ios::binary);
 
+	for (size_t i = 0; i < TOWER_AMOUNT; i++)
+	{
+		player->stats.towerstats[i].towerplaced = grid->buildplots[i].build;
+		std::cout << grid->buildplots[i].build << std::endl;
+	}
 	// Get placed towers
 	for (size_t i = 0; i < grid->towers.size(); i++)
 	{
@@ -251,6 +257,10 @@ void Game::Update()
 			inMenu = false;
 		}
 	}
+	else if (paused)
+	{
+		menu->Menu_Update(GetMousePos(), GetWindowSize(), &inMenu, &loadGame);
+	}
 	else
 	{
 		EntitySpawn();
@@ -278,6 +288,10 @@ void Game::Render()
 	window->clear();
 
 	if (inMenu)
+	{
+		menu->Menu_Render(this->window);
+	}
+	else if (paused)
 	{
 		menu->Menu_Render(this->window);
 	}

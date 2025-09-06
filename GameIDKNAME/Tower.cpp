@@ -15,8 +15,19 @@ void Tower::Tower_Init_Variables(Vector2f pos, Vector2f size)
 
 void Tower::Tower_UpdateDamage()
 {
-	damage = damage + (level);
-	std::cout << static_cast<uint16_t>(damage) << std::endl;
+	switch (type)
+	{
+	case 'T':
+		damage = 1 * (level);
+		break;
+	case 'R':
+		damage = 8 * (level);
+		break;
+	case 'S':
+		damage = 15 * (level);
+		break;
+	}
+
 }
 
 void Tower::Tower_Shoot(Vector2f windowsize, float dt)

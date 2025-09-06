@@ -10,7 +10,7 @@
 
 using namespace sf;
 
-#define TOWER_AMOUNT		15
+#define TOWER_AMOUNT		14
 #define TOWER_SIZE			30
 #define TOWER_START_POS		50
 #define TOWER_SPACE			14

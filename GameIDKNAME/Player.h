@@ -32,6 +32,7 @@ struct Stats
 		float sizeX;
 		float sizeY;
 		char type;
+		bool towerplaced;
 		uint8_t towerlevel;
 	} towerstats[TOWER_AMOUNT_];
 };

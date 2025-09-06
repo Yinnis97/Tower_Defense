@@ -188,9 +188,6 @@ void Grid::Grid_Update(Vector2f Mousepos,Vector2f windowsize, float dt, Stats* s
 								buildplots[Index_].build = true;
 							}
 							break;
-						case 3:
-							break;
-
 						default:
 							break;
 

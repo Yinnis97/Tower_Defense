@@ -35,6 +35,7 @@ private:
 public:
 	bool loadGame;
 	bool inMenu;
+	bool paused;
 
 	Game();
 	~Game();
