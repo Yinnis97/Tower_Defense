@@ -66,3 +66,10 @@ add_custom_command(TARGET TD POST_BUILD
         ${SRC_DIR}/Shaders
         $<TARGET_FILE_DIR:TD>/Shaders
 )
+
+# Copy assets Saves
+add_custom_command(TARGET TD POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${SRC_DIR}/Saves
+        $<TARGET_FILE_DIR:TD>/Saves
+)
