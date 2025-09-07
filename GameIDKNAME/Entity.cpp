@@ -3,14 +3,25 @@
 
 void Entity::Entity_Init(Vector2f windowsize)
 {
-	fullhealthbar.setFillColor(Color::Black);
-	fullhealthbar.setSize({ windowsize.x / 30, windowsize.y / 120 });
+	Color lvltxtclr(100, 100, 100, 255);
 
+	fullhealthbar.setFillColor(lvltxtclr);
+	fullhealthbar.setSize({ windowsize.x / 30, windowsize.y / 120 });
 	healthbar.setFillColor(Color::Red);
 	healthbar.setSize({ windowsize.x / 30, windowsize.y / 120 });
 
 	fullhealthbar.setOrigin({ fullhealthbar.getSize().x / 2,fullhealthbar.getSize().y/2 });
 	healthbar.setOrigin(fullhealthbar.getOrigin());
+
+	if (!font.openFromFile("Fonts/PixeloidSans.ttf"))
+	{
+		std::cout << "Error: Can't load Font! -> Player_Init" << std::endl;
+	}
+
+	level_text.emplace(font);
+	level_text->setCharacterSize(windowsize.x / 150);
+	level_text->setFillColor(lvltxtclr);
+	
 }
 
 int8_t Entity::Entity_GetHealth()
@@ -35,6 +46,16 @@ void Entity::Entity_UpdateHealthBar(Vector2f windowsize)
 
 	fullhealthbar.setPosition({ sprite->getPosition().x,sprite->getPosition().y - (sprite->getGlobalBounds().size.y/1.7f) });
 	healthbar.setPosition(fullhealthbar.getPosition());
+}
+
+void Entity::Entity_UpdateLevel(Vector2f windowsize)
+{
+	//Add logic to increased level
+	std::stringstream ss_lvl;
+	ss_lvl << level << std::endl;
+
+	level_text->setPosition({ fullhealthbar.getPosition().x + (fullhealthbar.getSize().x/1.8f), fullhealthbar.getPosition().y});
+	level_text->setString(ss_lvl.str());
 }
 
 Vector2u Entity::Entity_DropLoot()
@@ -142,5 +163,14 @@ void Entity::Entity_Update(Vector2f windowsize, float dt)
 	Entity_ChangeDirection(windowsize);
 	Entity_Move(windowsize, dt);
 	Entity_UpdateHealthBar(windowsize);
+	Entity_UpdateLevel(windowsize);
+}
+
+void Entity::Entity_Render(RenderWindow* window)
+{
+	window->draw(*sprite);
+	window->draw(fullhealthbar);
+	window->draw(healthbar);
+	window->draw(*level_text);
 }
 

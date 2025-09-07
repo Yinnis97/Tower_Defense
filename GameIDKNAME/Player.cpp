@@ -97,7 +97,7 @@ void Player::Player_Init(Vector2f windowsize)
 	orange_sapphire_text->setString(ss_o_sapphire.str());
 }
 
-void Player::Player_Proccess_Loot(Vector2u loot)
+void Player::Player_ProccessLoot(Vector2u loot)
 {
 	switch (loot.x)
 	{
@@ -114,6 +114,10 @@ void Player::Player_Proccess_Loot(Vector2u loot)
 		stats.resources.orange_sapphire = stats.resources.orange_sapphire + loot.y;
 		break;
 	}
+}
+
+void Player::Player_UpdateLevel()
+{
 }
 
 void Player::Player_Update(Vector2f windowsize)

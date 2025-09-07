@@ -192,10 +192,10 @@ void Game::EntitySpawn()
 		switch (random)
 		{
 		case 99:
-			entities.push_back(new Boss(GetWindowSize()));
+			entities.push_back(new Boss(GetWindowSize(),1));
 			break;
 		default:
-			entities.push_back(new Boss(GetWindowSize()));
+			entities.push_back(new Enemy(GetWindowSize(),1));
 
 			break;
 		}
@@ -232,16 +232,18 @@ void Game::EntityHitDetection(size_t index)
 		{
 		case 'E':
 			player->stats.resources.copper = player->stats.resources.copper + 1;
+			player->stats.xp += 10;
 			break;
 		case 'B':
 			player->stats.resources.gold = player->stats.resources.gold + 1;
+			player->stats.xp += 100;
 			break;
 		default:
 			std::cout << "Error at switch case entities GetID\n";
 			break;
 		}
 
-		player->Player_Proccess_Loot(entities[index]->Entity_DropLoot());
+		player->Player_ProccessLoot(entities[index]->Entity_DropLoot());
 
 		entities.erase(entities.begin() + index);
 	}
@@ -314,9 +316,7 @@ void Game::Render()
 
 		for (size_t e = 0; e < entities.size(); e++)
 		{
-			window->draw(*entities[e]->sprite);
-			window->draw(entities[e]->fullhealthbar);
-			window->draw(entities[e]->healthbar);
+			entities[e]->Entity_Render(window);
 		}
 	}
 
