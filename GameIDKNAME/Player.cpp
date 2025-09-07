@@ -127,7 +127,7 @@ void Player::Player_UpdateLevel(uint32_t xpGained)
 		stats.level++;
 		stats.xp = 0;
 	}
-	std::cout << "XP: " << stats.xp << " Level: " << stats.level << std::endl;
+	std::cout << "XP: " << stats.xp << "   Level: " << stats.level << std::endl;
 }
 
 void Player::Player_Update(Vector2f windowsize)
