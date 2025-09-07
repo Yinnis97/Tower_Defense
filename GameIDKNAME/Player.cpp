@@ -24,6 +24,8 @@ void Player::Player_Init(Vector2f windowsize)
 	stats.resources.silver = 2;
 	stats.resources.copper = 20;
 	stats.health = 10;
+	stats.xp = 0;
+	stats.level = 1;
 
 	stats.resources.blue_sapphire = 0;
 	stats.resources.green_sapphire = 0;
@@ -116,8 +118,16 @@ void Player::Player_ProccessLoot(Vector2u loot)
 	}
 }
 
-void Player::Player_UpdateLevel()
+void Player::Player_UpdateLevel(uint32_t xpGained)
 {
+	stats.xp += xpGained;
+
+	if (stats.xp >= (stats.level * 100))
+	{
+		stats.level++;
+		stats.xp = 0;
+	}
+	std::cout << "XP: " << stats.xp << " Level: " << stats.level << std::endl;
 }
 
 void Player::Player_Update(Vector2f windowsize)

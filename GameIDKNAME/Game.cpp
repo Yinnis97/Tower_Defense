@@ -232,11 +232,12 @@ void Game::EntityHitDetection(size_t index)
 		{
 		case 'E':
 			player->stats.resources.copper = player->stats.resources.copper + 1;
-			player->stats.xp += 10;
+			player->Player_UpdateLevel(10);
 			break;
 		case 'B':
 			player->stats.resources.gold = player->stats.resources.gold + 1;
-			player->stats.xp += 100;
+			player->stats.resources.copper = player->stats.resources.copper + 15;
+			player->Player_UpdateLevel(100);
 			break;
 		default:
 			std::cout << "Error at switch case entities GetID\n";

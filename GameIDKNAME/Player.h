@@ -10,7 +10,7 @@ using namespace sf;
 
 struct Stats
 {
-	uint16_t xp;
+	uint32_t xp;
 	uint16_t level;
 	uint16_t health;
 
@@ -65,7 +65,7 @@ public:
 	void Player_Init(Vector2f windowsize);
 
 	void Player_ProccessLoot(Vector2u loot);
-	void Player_UpdateLevel();
+	void Player_UpdateLevel(uint32_t xpGained);
 
 	void Player_Update(Vector2f windowsize);
 	void Player_Render(RenderWindow* window);
