@@ -171,6 +171,7 @@ void Grid::Grid_Update(Vector2f Mousepos,Vector2f windowsize, float dt, Stats* s
 								stats->resources.copper = stats->resources.copper - _TURRET_T_PRICE;
 								towers.push_back(new Turret(buildplots[Index_].shape.getPosition(), buildplots[Index_].shape.getSize(), windowsize.y / 2.5));
 								buildplots[Index_].build = true;
+								towers.back()->index = Index_;
 							}
 							break;
 						case 1:
@@ -179,6 +180,7 @@ void Grid::Grid_Update(Vector2f Mousepos,Vector2f windowsize, float dt, Stats* s
 								stats->resources.copper = stats->resources.copper - _ROCKET_T_PRICE;
 								towers.push_back(new Rocket(buildplots[Index_].shape.getPosition(), buildplots[Index_].shape.getSize(), windowsize.y / 5));
 								buildplots[Index_].build = true;
+								towers.back()->index = Index_;
 							}
 							break;
 						case 2:
@@ -187,6 +189,7 @@ void Grid::Grid_Update(Vector2f Mousepos,Vector2f windowsize, float dt, Stats* s
 								stats->resources.copper = stats->resources.copper - _SNIPER_T_PRICE;
 								towers.push_back(new Sniper(buildplots[Index_].shape.getPosition(), buildplots[Index_].shape.getSize(), windowsize.y / 0.5));
 								buildplots[Index_].build = true;
+								towers.back()->index = Index_;
 							}
 							break;
 						default:

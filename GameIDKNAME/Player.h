@@ -27,6 +27,7 @@ struct Stats
 
 	struct TowerStats
 	{
+		size_t index;
 		float x;
 		float y;
 		float sizeX;

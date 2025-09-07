@@ -106,26 +106,39 @@ void Game::LoadGame()
 	for (size_t i = 0; i < TOWER_AMOUNT_; i++)
 	{
 		grid->buildplots[i].build = player->stats.towerstats[i].towerplaced;
-		std::cout << grid->buildplots[i].build << std::endl;
+
 		switch (player->stats.towerstats[i].type)
 		{
-		case 'T':
-			grid->towers.push_back(new Turret({ player->stats.towerstats[i].x ,player->stats.towerstats[i].y },
-				{ player->stats.towerstats[i].sizeX ,player->stats.towerstats[i].sizeY }, GetWindowSize().y / 2.5));
-			grid->towers[i]->level = player->stats.towerstats[i].towerlevel;
-			grid->towers[i]->Tower_UpdateDamage();
+			
+		case 'T':			
+			grid->towers.push_back(new Turret({ grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().x,
+				 grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().y },
+				{ grid->buildplots[player->stats.towerstats[i].index].shape.getSize().x, 
+				grid->buildplots[player->stats.towerstats[i].index].shape.getSize().y },
+				GetWindowSize().y / 2.5));
+			grid->towers.back()->index = player->stats.towerstats[i].index;
+			grid->towers.back()->level = player->stats.towerstats[i].towerlevel;
+			grid->towers.back()->Tower_UpdateDamage();
 			break;
 		case 'S':
-			grid->towers.push_back(new Sniper({ player->stats.towerstats[i].x ,player->stats.towerstats[i].y },
-				{ player->stats.towerstats[i].sizeX ,player->stats.towerstats[i].sizeY }, GetWindowSize().y / 0.5));
-			grid->towers[i]->level = player->stats.towerstats[i].towerlevel;
-			grid->towers[i]->Tower_UpdateDamage();
+			grid->towers.push_back(new Sniper({ grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().x,
+				 grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().y },
+				{ grid->buildplots[player->stats.towerstats[i].index].shape.getSize().x,
+				grid->buildplots[player->stats.towerstats[i].index].shape.getSize().y },
+				GetWindowSize().y / 0.5));
+			grid->towers.back()->index = player->stats.towerstats[i].index;
+			grid->towers.back()->level = player->stats.towerstats[i].towerlevel;
+			grid->towers.back()->Tower_UpdateDamage();
 			break;
 		case 'R':
-			grid->towers.push_back(new Rocket({ player->stats.towerstats[i].x ,player->stats.towerstats[i].y },
-				{ player->stats.towerstats[i].sizeX ,player->stats.towerstats[i].sizeY }, GetWindowSize().y / 5));
-			grid->towers[i]->level = player->stats.towerstats[i].towerlevel;
-			grid->towers[i]->Tower_UpdateDamage();
+			grid->towers.push_back(new Rocket({ grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().x,
+				 grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().y },
+				{ grid->buildplots[player->stats.towerstats[i].index].shape.getSize().x,
+				grid->buildplots[player->stats.towerstats[i].index].shape.getSize().y },
+				GetWindowSize().y / 5));
+			grid->towers.back()->index = player->stats.towerstats[i].index;
+			grid->towers.back()->level = player->stats.towerstats[i].towerlevel;
+			grid->towers.back()->Tower_UpdateDamage();
 			break;
 		default:
 			break;
@@ -146,6 +159,7 @@ void Game::SaveGame()
 	// Get placed towers
 	for (size_t i = 0; i < grid->towers.size(); i++)
 	{
+		player->stats.towerstats[i].index = grid->towers[i]->index;
 		player->stats.towerstats[i].x = grid->towers[i]->shape.getPosition().x;
 		player->stats.towerstats[i].y = grid->towers[i]->shape.getPosition().y;
 		player->stats.towerstats[i].sizeX = grid->towers[i]->shape.getSize().x;

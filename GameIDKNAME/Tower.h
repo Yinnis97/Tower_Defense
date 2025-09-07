@@ -30,6 +30,7 @@ public:
 	RectangleShape shape;
 	Texture texture;
 	std::vector<Bullet> bullets;
+	size_t index;
 
 	Tower(Vector2f pos, Vector2f size, float spd, char type, float firerate, uint32_t dmg, float rds, uint32_t upPrice) :
 		position(pos), size(size), speed(spd), type(type), firerate(firerate), damage(dmg), radius(rds), upgradePrice(upPrice), lastshot(0.0), level(1) {}
