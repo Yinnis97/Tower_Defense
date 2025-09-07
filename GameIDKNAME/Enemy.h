@@ -6,16 +6,16 @@ class Enemy :
 private:
 
 public:
-    Enemy(Vector2f pos, int8_t hp = 2, char type = 'E') : Entity(pos, hp, type)
+    Enemy(Vector2f windowsize, int8_t hp = 2, char type = 'E') : Entity(windowsize, hp, type)
     {
-        this->Init(pos);
+        this->Entity_InitSprite(windowsize);
     }
 
-    void Init(Vector2f pos) override
+    void Entity_InitSprite(Vector2f windowsize) override
     {
         texture.loadFromFile("Textures/Enemy.png");
         sprite.emplace(texture);
-        auto x = pos.x / 2000;
+        auto x = windowsize.x / 2000;
         sprite->setOrigin({ sprite->getGlobalBounds().getCenter() });
         sprite->setScale({ x, x });
         sprite->setPosition({ startpos.x,((startpos.y / 8) + (startpos.y / 16)) });

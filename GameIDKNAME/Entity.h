@@ -10,28 +10,40 @@ class Entity
 {
 private:
 	int8_t health;
+	int8_t maxhealth;
 	char ID;
 
 public:
 
-	Entity(const Vector2f pos, int hp, char type) : startpos(pos), health(hp), ID(type), direction(0), lastdir(6,false), ms(10) {}
+	Entity(const Vector2f windowsize, int hp, char type) : startpos(windowsize), health(hp), ID(type), direction(0), lastdir(6,false), ms(10), maxhealth(hp)
+	{
+		Entity_Init(windowsize);
+	}
 
 	const Vector2f startpos;
 	Texture texture;
 	std::optional<Sprite> sprite;
 
+	RectangleShape fullhealthbar;
+	RectangleShape healthbar;
+
 	float ms;
 	size_t direction;
 	std::vector<bool> lastdir;
 
-	virtual void Init(Vector2f pos) = 0;
+	virtual void Entity_InitSprite(Vector2f windowsize) = 0;
+	void Entity_Init(Vector2f windowsize);
 
-	int8_t GetHealth();
-	char GetID();
+	int8_t Entity_GetHealth();
+	char Entity_GetID();
 
-	void TakeDmg(int8_t dmg);
-	Vector2u DropLoot();
-	void ChangeDirection(Vector2f windowsize);
-	void MoveEnemy(Vector2f windowsize, float dt);
+	void Entity_TakeDmg(int8_t dmg);
+	void Entity_UpdateHealthBar(Vector2f windowsize);
+
+	Vector2u Entity_DropLoot();
+	void Entity_ChangeDirection(Vector2f windowsize);
+	void Entity_Move(Vector2f windowsize, float dt);
+
+	void Entity_Update(Vector2f windowsize, float dt);
 };
 

@@ -1,22 +1,43 @@
 #include "Entity.h"
 
 
-int8_t Entity::GetHealth()
+void Entity::Entity_Init(Vector2f windowsize)
+{
+	fullhealthbar.setFillColor(Color::Black);
+	fullhealthbar.setSize({ windowsize.x / 30, windowsize.y / 120 });
+
+	healthbar.setFillColor(Color::Red);
+	healthbar.setSize({ windowsize.x / 30, windowsize.y / 120 });
+
+	fullhealthbar.setOrigin({ fullhealthbar.getSize().x / 2,fullhealthbar.getSize().y/2 });
+	healthbar.setOrigin(fullhealthbar.getOrigin());
+}
+
+int8_t Entity::Entity_GetHealth()
 {
     return this->health;
 }
 
-char Entity::GetID()
+char Entity::Entity_GetID()
 {
     return this->ID;
 }
 
-void Entity::TakeDmg(int8_t dmg)
+void Entity::Entity_TakeDmg(int8_t dmg)
 {
     this->health = this->health - dmg;
 }
 
-Vector2u Entity::DropLoot()
+void Entity::Entity_UpdateHealthBar(Vector2f windowsize)
+{
+	float r = float(health) / float(maxhealth);
+	healthbar.setSize({ fullhealthbar.getSize().x * r, fullhealthbar.getSize().y });
+
+	fullhealthbar.setPosition({ sprite->getPosition().x,sprite->getPosition().y - (sprite->getGlobalBounds().size.y/1.7f) });
+	healthbar.setPosition(fullhealthbar.getPosition());
+}
+
+Vector2u Entity::Entity_DropLoot()
 {
 	if (ID == 'E')
 	{
@@ -25,19 +46,16 @@ Vector2u Entity::DropLoot()
 		if(random <= 100)
 		{
 			uint8_t amount = (rand() % 10) + 1;
-			std::cout << "Dropped Green sapphire, number: " << random << "     Amount: " << static_cast<uint16_t>(amount) << std::endl;
 			return { 2,amount };
 		}
 		else if (random <= 600)
 		{
 			uint8_t amount = (rand() % 10) + 1;
-			std::cout << "Dropped Yellow sapphire, number: " << random << "     Amount: " << static_cast<uint16_t>(amount) << std::endl;
 			return { 3,amount };
 		}
 		else if (random <= 2600)
 		{
 			uint8_t amount = (rand() % 10) + 1;
-			std::cout << "Dropped Orange sapphire, number: " << random << "     Amount: " << static_cast<uint16_t>(amount) << std::endl;
 			return { 4,amount };
 		}
 
@@ -49,7 +67,6 @@ Vector2u Entity::DropLoot()
 		if (random <= 10)
 		{
 			uint8_t amount = (rand() % 10) + 1;
-			std::cout << "Dropped Blue sapphire, number: " << random << "    Amount: " << static_cast<uint16_t>(amount) << std::endl;
 			return { 1,amount };
 		}
 		return { 0,0 };
@@ -60,7 +77,7 @@ Vector2u Entity::DropLoot()
 	}
 }
 
-void Entity::ChangeDirection(Vector2f windowsize)
+void Entity::Entity_ChangeDirection(Vector2f windowsize)
 {
 	// 0 = left , 1 = down , 2 = up, 3 = right
 	// A horrible way of doing this.
@@ -98,7 +115,7 @@ void Entity::ChangeDirection(Vector2f windowsize)
 
 }
 
-void Entity::MoveEnemy(Vector2f windowsize,float dt)
+void Entity::Entity_Move(Vector2f windowsize,float dt)
 {
 	switch (direction)
 	{
@@ -118,5 +135,12 @@ void Entity::MoveEnemy(Vector2f windowsize,float dt)
 		std::cout << "Error Switch case Game::Update -> Entities direction" << std::endl;
 		break;
 	}
+}
+
+void Entity::Entity_Update(Vector2f windowsize, float dt)
+{
+	Entity_ChangeDirection(windowsize);
+	Entity_Move(windowsize, dt);
+	Entity_UpdateHealthBar(windowsize);
 }
 

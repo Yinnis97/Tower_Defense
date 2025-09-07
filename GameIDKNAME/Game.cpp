@@ -154,7 +154,6 @@ void Game::SaveGame()
 	for (size_t i = 0; i < TOWER_AMOUNT; i++)
 	{
 		player->stats.towerstats[i].towerplaced = grid->buildplots[i].build;
-		std::cout << grid->buildplots[i].build << std::endl;
 	}
 	// Get placed towers
 	for (size_t i = 0; i < grid->towers.size(); i++)
@@ -196,7 +195,8 @@ void Game::EntitySpawn()
 			entities.push_back(new Boss(GetWindowSize()));
 			break;
 		default:
-			entities.push_back(new Enemy(GetWindowSize()));
+			entities.push_back(new Boss(GetWindowSize()));
+
 			break;
 		}
 		spawninterval = 0.0f;
@@ -214,10 +214,10 @@ void Game::EntityHitDetection(size_t index)
 		{
 			if (entities[index]->sprite->getGlobalBounds().contains(grid->towers[i]->bullets[j].shape.getPosition()))
 			{
-				entities[index]->TakeDmg(grid->towers[i]->bullets[j].damage);
+				entities[index]->Entity_TakeDmg(grid->towers[i]->bullets[j].damage);
 				grid->towers[i]->bullets.erase(grid->towers[i]->bullets.begin() + j);
 				
-				if (entities[index]->GetHealth() <= 0)
+				if (entities[index]->Entity_GetHealth() <= 0)
 				{
 					entityDied = true;
 				}
@@ -228,7 +228,7 @@ void Game::EntityHitDetection(size_t index)
 
 	if (entityDied)
 	{
-		switch (entities[index]->GetID())
+		switch (entities[index]->Entity_GetID())
 		{
 		case 'E':
 			player->stats.resources.copper = player->stats.resources.copper + 1;
@@ -241,7 +241,7 @@ void Game::EntityHitDetection(size_t index)
 			break;
 		}
 
-		player->Player_Proccess_Loot(entities[index]->DropLoot());
+		player->Player_Proccess_Loot(entities[index]->Entity_DropLoot());
 
 		entities.erase(entities.begin() + index);
 	}
@@ -284,9 +284,7 @@ void Game::Update()
 		
 		for (size_t index = 0; index < entities.size(); index++)
 		{
-			entities[index]->ChangeDirection(GetWindowSize());
-			entities[index]->MoveEnemy(GetWindowSize(),dt);
-
+			entities[index]->Entity_Update(GetWindowSize(), dt);
 			EntityHitDetection(index);
 		}
 
@@ -317,6 +315,8 @@ void Game::Render()
 		for (size_t e = 0; e < entities.size(); e++)
 		{
 			window->draw(*entities[e]->sprite);
+			window->draw(entities[e]->fullhealthbar);
+			window->draw(entities[e]->healthbar);
 		}
 	}
 
