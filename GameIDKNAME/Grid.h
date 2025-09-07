@@ -17,8 +17,8 @@ using namespace sf;
 #define TOWER_TYPES			3
 
 #define _TURRET_T_PRICE		10
-#define _SNIPER_T_PRICE		20
-#define _ROCKET_T_PRICE		30
+#define _ROCKET_T_PRICE		20
+#define _SNIPER_T_PRICE		30
 
 struct buildplot
 {
@@ -35,7 +35,6 @@ private:
 
 public:
 	std::vector<Tower*> towers;
-
 	std::vector<RectangleShape> backgroundshapes;
 	std::vector<buildplot> buildplots;
 	std::vector<RectangleShape> toweroptionsrect;

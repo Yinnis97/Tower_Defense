@@ -138,13 +138,6 @@ void Player::Player_Update(Vector2f windowsize)
 	green_sapphire_text->setString(ss_g_sapphire.str());
 	yellow_sapphire_text->setString(ss_y_sapphire.str());
 	orange_sapphire_text->setString(ss_o_sapphire.str());
-
-	//silver_text->setPosition({ (gold_text->getGlobalBounds().position.x + gold_text->getGlobalBounds().size.x) + spacing, windowsize.y - (windowsize.y / 40) });
-	//copper_text->setPosition({ (silver_text->getGlobalBounds().position.x + silver_text->getGlobalBounds().size.x) + spacing, windowsize.y - (windowsize.y / 40) });
-	//blue_sapphire_text->setPosition({ (copper_text->getGlobalBounds().position.x + copper_text->getGlobalBounds().size.x) + spacing,windowsize.y - (windowsize.y / 40) });
-	//green_sapphire_text->setPosition({ (blue_sapphire_text->getGlobalBounds().position.x + blue_sapphire_text->getGlobalBounds().size.x) + spacing,windowsize.y - (windowsize.y / 40) });
-	//yellow_sapphire_text->setPosition({ (green_sapphire_text->getGlobalBounds().position.x + green_sapphire_text->getGlobalBounds().size.x) + spacing,windowsize.y - (windowsize.y / 40) });
-	//orange_sapphire_text->setPosition({ (yellow_sapphire_text->getGlobalBounds().position.x + yellow_sapphire_text->getGlobalBounds().size.x) + spacing,windowsize.y - (windowsize.y / 40) });
 }
 
 void Player::Player_Render(RenderWindow* window)

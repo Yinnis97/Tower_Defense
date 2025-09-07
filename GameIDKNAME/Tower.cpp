@@ -11,6 +11,26 @@ void Tower::Tower_Init_Variables(Vector2f pos, Vector2f size)
 	shape.setTexture(&texture);
 	center = shape.getPosition() + Vector2f{ size.x/2, size.y/2 };
 	clock.restart();
+
+	if (!font.openFromFile("Fonts/PixeloidSans.ttf"))
+	{
+		std::cout << "Error: Can't load Font! -> Grid_Init" << std::endl;
+	}
+
+	Color textcolor(100, 100, 100, 255);
+	std::stringstream ss_dps;
+	ss_dps << "Dps: " << Tower_GetDPS() << std::endl;
+	dps_text.emplace(font);
+	dps_text->setCharacterSize(size.x/5);
+	dps_text->setFillColor(textcolor);
+	dps_text->setPosition({pos.x, pos.y + shape.getSize().y });
+	dps_text->setString(ss_dps.str());
+}
+
+float Tower::Tower_GetDPS()
+{
+	float t = 1 / firerate;
+	return float(damage) * t;
 }
 
 void Tower::Tower_UpdateDamage()
@@ -27,7 +47,6 @@ void Tower::Tower_UpdateDamage()
 		damage = 15 * (level);
 		break;
 	}
-
 }
 
 void Tower::Tower_Shoot(Vector2f windowsize, float dt)
@@ -46,6 +65,12 @@ void Tower::Tower_Shoot(Vector2f windowsize, float dt)
 
 void Tower::Tower_Update(Vector2f windowsize, float dt)
 {
+	// Update DPS text
+	std::stringstream ss_dps;
+	ss_dps << "Dps: " << Tower_GetDPS() << std::endl;
+	dps_text->setString(ss_dps.str());
+
+	// Shoot
 	Tower_Shoot(windowsize, dt);
 
 	// Move bullets according to bullet speed
@@ -72,4 +97,5 @@ void Tower::Tower_Render(RenderWindow* window)
 		window->draw(bullets[i].shape);
 	}
 	window->draw(shape);
+	window->draw(*dps_text);
 }

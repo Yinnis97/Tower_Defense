@@ -3,6 +3,7 @@
 #include <SFML/Audio.hpp>
 #include "Bullet.h"
 #include <iostream>
+#include <sstream> 
 #include "math.h"
 using namespace sf;
 
@@ -19,6 +20,8 @@ private:
 	float radius;
 	Clock clock;
 	float lastshot;
+	std::optional<Text> dps_text;
+	Font font;
 
 public:
 	uint32_t upgradePrice;
@@ -34,7 +37,9 @@ public:
 	~Tower();
 	virtual void Tower_Init(Vector2f pos, Vector2f size) = 0;
 
+	
 	void Tower_Init_Variables(Vector2f pos, Vector2f size);
+	float Tower_GetDPS();
 	void Tower_UpdateDamage();
 	void Tower_Shoot(Vector2f windowsize, float dt);
 	void Tower_Update(Vector2f windowsize, float dt);

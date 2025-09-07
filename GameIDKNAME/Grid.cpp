@@ -104,6 +104,7 @@ void Grid::Grid_Init(Vector2f windowsize)
 	}
 
 	Grid_LoadShaders(windowsize);
+
 }
 
 void Grid::Grid_LoadShaders(Vector2f windowsize)
