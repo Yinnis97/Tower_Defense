@@ -10,7 +10,7 @@
 #include "Grid.h"
 #include "Player.h"
 #include "Menu.h"
-
+#include "Settings.h"
 
 using namespace sf;
 
@@ -27,6 +27,7 @@ private:
 	Grid* grid;
 	Player* player;
 	Menu* menu;
+	Settings* settings;
 
 	Clock dt_clock;
 	float dt;

@@ -36,6 +36,7 @@ void Game::Init_Game()
 	srand(time(NULL));
 	grid = new Grid(GetWindowSize());
 	player = new Player(GetWindowSize());
+	settings = new Settings(GetWindowSize());
 }
 
 bool Game::Running()
@@ -284,7 +285,8 @@ void Game::Update()
 
 		player->Player_Update(GetWindowSize());
 		grid->Grid_Update(GetMousePos(), GetWindowSize(), dt,&player->stats);
-		
+		settings->Settings_Update(GetWindowSize());
+
 		for (size_t index = 0; index < entities.size(); index++)
 		{
 			entities[index]->Entity_Update(GetWindowSize(), dt);
@@ -314,6 +316,7 @@ void Game::Render()
 	{
 		grid->Grid_Render(this->window);
 		player->Player_Render(this->window);
+		settings->Settings_Render(this->window);
 
 		for (size_t e = 0; e < entities.size(); e++)
 		{
