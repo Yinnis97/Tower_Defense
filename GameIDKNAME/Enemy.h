@@ -13,9 +13,10 @@ public:
 
     void Entity_InitSprite(Vector2f windowsize) override
     {
-        texture.loadFromFile("Textures/Enemy.png");
+        texture.loadFromFile("Textures/baby-export.png");
         sprite.emplace(texture);
         auto x = windowsize.x / 2000;
+ 
         sprite->setOrigin({ sprite->getGlobalBounds().getCenter() });
         sprite->setScale({ x, x });
         sprite->setPosition({ startpos.x,((startpos.y / 8) + (startpos.y / 16)) });
