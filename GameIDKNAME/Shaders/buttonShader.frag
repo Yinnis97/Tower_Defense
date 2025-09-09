@@ -10,6 +10,6 @@ void main()
 {
 	vec2 st = gl_FragCoord.xy/resolution;
 	
-	gl_FragColor = vec4(st.y,0.0,0.0,1.0);
+	gl_FragColor = vec4(0.0,st.y,0.3,1.0);
 }
 

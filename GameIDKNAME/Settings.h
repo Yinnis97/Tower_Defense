@@ -14,11 +14,12 @@ private:
 	RectangleShape taskbar;
 	RectangleShape quitButton;
 	RectangleShape pauseButton;
+	RectangleShape extra1Button;
+	RectangleShape extra2Button;
 
 	std::optional<Text> quit_text;
 	std::optional<Text> pause_text;
 
-	Shader buttonShader;
 
 public:
 	
