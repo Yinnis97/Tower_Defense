@@ -54,6 +54,7 @@ public:
 
 	void LoadGame();
 	void SaveGame();
+	void QuitGame();
 
 	void EntitySpawn();
 	void EntityHitDetection(size_t index);

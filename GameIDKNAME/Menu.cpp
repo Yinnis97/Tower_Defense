@@ -105,8 +105,6 @@ void Menu::Menu_LoadCredits()
 
 void Menu::Menu_Update(Vector2f mousepos, Vector2f windowsize, bool* inMenu, bool* loadGame)
 {
-	backgroundShader.setUniform("time", shaderClock.getElapsedTime().asSeconds());
-
 	if (Mouse::isButtonPressed(Mouse::Button::Left))
 	{
 		if (!mousepressed)

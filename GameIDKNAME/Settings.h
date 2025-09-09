@@ -20,6 +20,12 @@ private:
 	std::optional<Text> quit_text;
 	std::optional<Text> pause_text;
 
+	bool mousepressed;
+	bool pausepressed;
+	bool quitpressed;
+
+	Color* color1;
+	Color* color2;
 
 public:
 	
@@ -29,7 +35,7 @@ public:
 
 	void Settings_Init(Vector2f windowsize);
 
-	void Settings_Update(Vector2f windowsize);
+	void Settings_Update(Vector2f windowsize, Vector2f mousepos, bool* paused);
 	void Settings_Render(RenderWindow* window);
 };
 
