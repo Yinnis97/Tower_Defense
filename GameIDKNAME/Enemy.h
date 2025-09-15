@@ -13,7 +13,7 @@ public:
 
     void Entity_InitSprite(Vector2f windowsize) override
     {
-        texture.loadFromFile("Textures/baby-export.png");
+        texture.loadFromFile("Textures/Enemy.png");
         sprite.emplace(texture);
         auto x = windowsize.x / 2000;
  

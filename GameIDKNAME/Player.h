@@ -12,7 +12,7 @@ struct Stats
 {
 	uint32_t xp;
 	uint16_t level;
-	uint16_t health;
+	int16_t health;
 
 	struct Resources
 	{
