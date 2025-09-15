@@ -57,7 +57,8 @@ void Game::Pollevents()
 			switch (keyPressed->scancode)
 			{
 			case Keyboard::Scancode::Escape:
-				QuitGame();
+				SaveGame();
+				window->close();
 				break;
 			case Keyboard::Scancode::P:
 				if (!inMenu)
@@ -181,12 +182,6 @@ void Game::SaveGame()
 	file.write(data_player, dataSize_player);
 }
 
-void Game::QuitGame()
-{
-	SaveGame();
-	window->close();
-}
-
 void Game::EntitySpawn()
 {
 	spawninterval += dt;
@@ -283,6 +278,7 @@ void Game::Update()
 	else if (paused)
 	{
 		menu->Menu_Update(GetMousePos(), GetWindowSize(), &inMenu, &loadGame);
+		settings->Settings_Update(GetWindowSize(), GetMousePos(), &paused);
 	}
 	else
 	{
@@ -316,6 +312,7 @@ void Game::Render()
 	else if (paused)
 	{
 		menu->Menu_Render(this->window);
+		settings->Settings_Render(this->window);
 	}
 	else
 	{

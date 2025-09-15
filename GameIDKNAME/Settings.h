@@ -14,18 +14,24 @@ private:
 	RectangleShape taskbar;
 	RectangleShape quitButton;
 	RectangleShape pauseButton;
-	RectangleShape extra1Button;
-	RectangleShape extra2Button;
+	RectangleShape tempButton;
+	RectangleShape saveButton;
 
 	std::optional<Text> quit_text;
 	std::optional<Text> pause_text;
+	std::optional<Text> save_text;
+	std::optional<Text> temp_text;
 
 	bool mousepressed;
 	bool pausepressed;
 	bool quitpressed;
+	bool savepressed;
+	bool temppressed;
 
-	Color* color1;
-	Color* color2;
+	Color* isPressedcolor;
+	Color* outlineColor;
+	Color* buttonColor;
+	Color* barcolor;
 
 public:
 	
