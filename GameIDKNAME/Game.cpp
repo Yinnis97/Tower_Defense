@@ -18,6 +18,9 @@ void Game::Init_Var()
 	inMenu = true;
 	paused = false;
 	loadGame = false;
+	quit = false;
+	save = false;
+
 	spawninterval = 0.0f;
 	dt = dt_clock.restart().asSeconds();
 }
@@ -69,6 +72,17 @@ void Game::Pollevents()
 			}
 		}
 	}
+
+	if (quit)
+	{
+		SaveGame();
+		window->close();
+	}
+	if (save)
+	{
+		SaveGame();
+		save = false;
+	}
 }
 
 void Game::UpdateDeltaTime()
@@ -94,6 +108,7 @@ void Game::LoadGame()
 	// Treat as char*
 	char* data_player = reinterpret_cast<char*>(&player->stats);
 	size_t dataSize_player = sizeof(Stats);
+
 	// Read file
 	file.read(data_player, dataSize_player);
 
@@ -110,11 +125,11 @@ void Game::LoadGame()
 
 		switch (player->stats.towerstats[i].type)
 		{
-			
-		case 'T':			
+
+		case 'T':
 			grid->towers.push_back(new Turret({ grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().x,
-				 grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().y },
-				{ grid->buildplots[player->stats.towerstats[i].index].shape.getSize().x, 
+					grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().y },
+				{ grid->buildplots[player->stats.towerstats[i].index].shape.getSize().x,
 				grid->buildplots[player->stats.towerstats[i].index].shape.getSize().y },
 				GetWindowSize().y / 2.5));
 			grid->towers.back()->index = player->stats.towerstats[i].index;
@@ -123,7 +138,7 @@ void Game::LoadGame()
 			break;
 		case 'S':
 			grid->towers.push_back(new Sniper({ grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().x,
-				 grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().y },
+					grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().y },
 				{ grid->buildplots[player->stats.towerstats[i].index].shape.getSize().x,
 				grid->buildplots[player->stats.towerstats[i].index].shape.getSize().y },
 				GetWindowSize().y / 0.5));
@@ -133,7 +148,7 @@ void Game::LoadGame()
 			break;
 		case 'R':
 			grid->towers.push_back(new Rocket({ grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().x,
-				 grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().y },
+					grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().y },
 				{ grid->buildplots[player->stats.towerstats[i].index].shape.getSize().x,
 				grid->buildplots[player->stats.towerstats[i].index].shape.getSize().y },
 				GetWindowSize().y / 5));
@@ -180,6 +195,12 @@ void Game::SaveGame()
 
 	// Write to file
 	file.write(data_player, dataSize_player);
+
+	// Decryption (for manual saving)
+	for (size_t i = 0; i < dataSize_player; i++)
+	{
+		data_player[i] ^= key;
+	}
 }
 
 void Game::EntitySpawn()
@@ -278,7 +299,7 @@ void Game::Update()
 	else if (paused)
 	{
 		menu->Menu_Update(GetMousePos(), GetWindowSize(), &inMenu, &loadGame);
-		settings->Settings_Update(GetWindowSize(), GetMousePos(), &paused);
+		settings->Settings_Update(GetWindowSize(), GetMousePos(), &paused, &save, &quit);
 	}
 	else
 	{
@@ -286,7 +307,7 @@ void Game::Update()
 
 		player->Player_Update(GetWindowSize());
 		grid->Grid_Update(GetMousePos(), GetWindowSize(), dt,&player->stats);
-		settings->Settings_Update(GetWindowSize(), GetMousePos(), &paused);
+		settings->Settings_Update(GetWindowSize(), GetMousePos(), &paused, &save, &quit);
 
 		for (size_t index = 0; index < entities.size(); index++)
 		{

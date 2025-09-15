@@ -37,6 +37,8 @@ public:
 	bool loadGame;
 	bool inMenu;
 	bool paused;
+	bool quit;
+	bool save;
 
 	Game();
 	~Game();

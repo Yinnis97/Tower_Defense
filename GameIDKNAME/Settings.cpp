@@ -90,7 +90,7 @@ void Settings::Settings_Init(Vector2f windowsize)
 	temp_text->setPosition({ tempButton.getGlobalBounds().getCenter().x, tempButton.getGlobalBounds().getCenter().y - (tempButton.getSize().y / 5) });
 }
 
-void Settings::Settings_Update(Vector2f windowsize, Vector2f mousepos, bool* paused)
+void Settings::Settings_Update(Vector2f windowsize, Vector2f mousepos, bool* paused, bool* save, bool* quit)
 {
 	if (Mouse::isButtonPressed(Mouse::Button::Left))
 	{
@@ -131,11 +131,11 @@ void Settings::Settings_Update(Vector2f windowsize, Vector2f mousepos, bool* pau
 		}
 		if (quitButton.getGlobalBounds().contains(mousepos) && quitpressed)
 		{
-			std::cout << "quit\n";
+			*quit = true;
 		}
 		if (saveButton.getGlobalBounds().contains(mousepos) && savepressed)
 		{
-			std::cout << "save\n";
+			*save = true;
 		}
 		if (tempButton.getGlobalBounds().contains(mousepos) && temppressed)
 		{

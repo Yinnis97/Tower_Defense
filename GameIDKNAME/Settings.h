@@ -3,6 +3,7 @@
 #include <sstream> 
 #include "math.h"
 #include <SFML/Graphics.hpp>
+#include "Player.h"
 
 using namespace sf;
 
@@ -41,7 +42,7 @@ public:
 
 	void Settings_Init(Vector2f windowsize);
 
-	void Settings_Update(Vector2f windowsize, Vector2f mousepos, bool* paused);
+	void Settings_Update(Vector2f windowsize, Vector2f mousepos, bool* paused, bool* save, bool* quit);
 	void Settings_Render(RenderWindow* window);
 };
 
