@@ -11,6 +11,7 @@ using namespace sf;
 struct Stats
 {
 	uint32_t xp;
+	uint32_t xpNeeded;
 	uint16_t level;
 	int16_t health;
 
@@ -49,6 +50,10 @@ public:
 	Font font;
 	float spacing;
 	
+	RectangleShape XP_needed;
+	RectangleShape XP_current;
+	std::optional<Text> level_text;
+
 	std::optional<Text> health_text;
 	std::optional<Text> gold_text;
 	std::optional<Text> silver_text;
@@ -65,7 +70,7 @@ public:
 	void Player_Init(Vector2f windowsize);
 
 	void Player_ProccessLoot(Vector2u loot);
-	void Player_UpdateLevel(uint32_t xpGained);
+	void Player_UpdateLevel(uint32_t xpGained, Vector2f windowsize);
 
 	void Player_Update(Vector2f windowsize);
 	void Player_Render(RenderWindow* window);

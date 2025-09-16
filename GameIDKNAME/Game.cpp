@@ -254,12 +254,12 @@ void Game::EntityHitDetection(size_t index)
 		{
 		case 'E':
 			player->stats.resources.copper = player->stats.resources.copper + 1;
-			player->Player_UpdateLevel(10);
+			player->Player_UpdateLevel(10, GetWindowSize());
 			break;
 		case 'B':
 			player->stats.resources.gold = player->stats.resources.gold + 1;
 			player->stats.resources.copper = player->stats.resources.copper + 15;
-			player->Player_UpdateLevel(100);
+			player->Player_UpdateLevel(100, GetWindowSize());
 			break;
 		default:
 			std::cout << "Error at switch case entities GetID\n";
@@ -305,10 +305,10 @@ void Game::Update()
 	{
 		EntitySpawn();
 
-		player->Player_Update(GetWindowSize());
-		grid->Grid_Update(GetMousePos(), GetWindowSize(), dt,&player->stats);
+		grid->Grid_Update(GetMousePos(), GetWindowSize(), dt, &player->stats);
 		settings->Settings_Update(GetWindowSize(), GetMousePos(), &paused, &save, &quit);
-
+		player->Player_Update(GetWindowSize());
+		
 		for (size_t index = 0; index < entities.size(); index++)
 		{
 			entities[index]->Entity_Update(GetWindowSize(), dt);
@@ -338,8 +338,8 @@ void Game::Render()
 	else
 	{
 		grid->Grid_Render(this->window);
-		player->Player_Render(this->window);
 		settings->Settings_Render(this->window);
+		player->Player_Render(this->window);
 
 		for (size_t e = 0; e < entities.size(); e++)
 		{

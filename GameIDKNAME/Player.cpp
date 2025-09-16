@@ -19,6 +19,10 @@ void Player::Player_Init(Vector2f windowsize)
 	Color color_green_sapphire(0,183,10,255);
 	Color color_yellow_sapphire(224,232,0,255);
 	Color color_orange_sapphire(225, 110, 0,255);
+	Color outlineColor(120, 120, 120, 255);
+	Color color_level(50, 50, 100, 255);
+
+	float outlineSize = (windowsize.x / 1000);
 
 	stats.resources.gold = 1;
 	stats.resources.silver = 2;
@@ -26,6 +30,7 @@ void Player::Player_Init(Vector2f windowsize)
 	stats.health = 10;
 	stats.xp = 0;
 	stats.level = 1;
+	stats.xpNeeded = stats.level * 100;
 
 	stats.resources.blue_sapphire = 0;
 	stats.resources.green_sapphire = 0;
@@ -50,53 +55,78 @@ void Player::Player_Init(Vector2f windowsize)
 	ss_y_sapphire << "Yellow Sapphire: " << stats.resources.yellow_sapphire << std::endl;
 	ss_o_sapphire << "Orange Sapphire: " << stats.resources.orange_sapphire << std::endl;
 
+	// Gold
 	gold_text.emplace(font);
 	gold_text->setCharacterSize(windowsize.x / 100);
 	gold_text->setPosition({spacing, windowsize.y - (windowsize.y/40)});
 	gold_text->setFillColor(color_gold);
 	gold_text->setString(ss_gold.str());
 
+	// Silver
 	silver_text.emplace(font);
 	silver_text->setCharacterSize(windowsize.x / 100);
 	silver_text->setPosition({ (gold_text->getGlobalBounds().position.x + gold_text->getGlobalBounds().size.x) + spacing, windowsize.y - (windowsize.y / 40) });
 	silver_text->setFillColor(color_silver);
 	silver_text->setString(ss_silver.str());
 
+	// Copper
 	copper_text.emplace(font);
 	copper_text->setCharacterSize(windowsize.x / 100);
 	copper_text->setPosition({ (silver_text->getGlobalBounds().position.x + silver_text->getGlobalBounds().size.x) + spacing, windowsize.y - (windowsize.y / 40)});
 	copper_text->setFillColor(color_copper);
 	copper_text->setString(ss_copper.str());
 
+	// Player Health
 	health_text.emplace(font);
 	health_text->setCharacterSize(windowsize.x / 100);
 	health_text->setPosition({ (windowsize.x / STATS_POS_INDEX) * 11,windowsize.y - (windowsize.y / 40)});
 	health_text->setFillColor(color_health);
 	health_text->setString(ss_health.str());
 
+	// Blue Sapphire
 	blue_sapphire_text.emplace(font);
 	blue_sapphire_text->setCharacterSize(windowsize.x / 100);
 	blue_sapphire_text->setPosition({ (copper_text->getGlobalBounds().position.x + copper_text->getGlobalBounds().size.x) + spacing,windowsize.y - (windowsize.y / 40) });
 	blue_sapphire_text->setFillColor(color_blue_sapphire);
 	blue_sapphire_text->setString(ss_b_sapphire.str());
 
+	// Green Sapphire
 	green_sapphire_text.emplace(font);
 	green_sapphire_text->setCharacterSize(windowsize.x / 100);
 	green_sapphire_text->setPosition({ (blue_sapphire_text->getGlobalBounds().position.x + blue_sapphire_text->getGlobalBounds().size.x) + spacing,windowsize.y - (windowsize.y / 40) });
 	green_sapphire_text->setFillColor(color_green_sapphire);
 	green_sapphire_text->setString(ss_g_sapphire.str());
 
+	// Yellow Sapphire
 	yellow_sapphire_text.emplace(font);
 	yellow_sapphire_text->setCharacterSize(windowsize.x / 100);
 	yellow_sapphire_text->setPosition({ (green_sapphire_text->getGlobalBounds().position.x + green_sapphire_text->getGlobalBounds().size.x) + spacing,windowsize.y - (windowsize.y / 40) });
 	yellow_sapphire_text->setFillColor(color_yellow_sapphire);
 	yellow_sapphire_text->setString(ss_y_sapphire.str());
 
+	// Orange Sapphire
 	orange_sapphire_text.emplace(font);
 	orange_sapphire_text->setCharacterSize(windowsize.x / 100);
 	orange_sapphire_text->setPosition({ (yellow_sapphire_text->getGlobalBounds().position.x + yellow_sapphire_text->getGlobalBounds().size.x) + spacing,windowsize.y - (windowsize.y / 40) });
 	orange_sapphire_text->setFillColor(color_orange_sapphire);
 	orange_sapphire_text->setString(ss_o_sapphire.str());
+
+	// XP Bar (Needed XP)
+	XP_needed.setFillColor(color_silver);
+	XP_needed.setSize({ windowsize.x/4, (windowsize.y / 32) });
+	XP_needed.setPosition({windowsize.x/2 - (XP_needed.getSize().x / 2), outlineSize});
+	XP_needed.setOutlineThickness(outlineSize);
+	XP_needed.setOutlineColor(outlineColor);
+
+	// XP bar (Current XP)
+	XP_current.setFillColor(Color::Green);
+	XP_current.setPosition(XP_needed.getPosition());
+
+	// Level text
+	level_text.emplace(font);
+	level_text->setCharacterSize(windowsize.x / 100);
+	level_text->setPosition({ XP_needed.getPosition().x + (XP_needed.getSize().x / 2), XP_needed.getPosition().y + (XP_needed.getSize().y / 2)});
+	level_text->setFillColor(color_level);
 }
 
 void Player::Player_ProccessLoot(Vector2u loot)
@@ -118,16 +148,30 @@ void Player::Player_ProccessLoot(Vector2u loot)
 	}
 }
 
-void Player::Player_UpdateLevel(uint32_t xpGained)
+void Player::Player_UpdateLevel(uint32_t xpGained, Vector2f windowsize)
 {
 	stats.xp += xpGained;
+	stats.xpNeeded = stats.level * 100;
 
-	if (stats.xp >= (stats.level * 100))
+	if (stats.xp >= stats.xpNeeded)
 	{
+		//stats.level = stats.level+200;
 		stats.level++;
 		stats.xp = 0;
 	}
-	std::cout << "XP: " << stats.xp << "  Level: " << stats.level << std::endl;
+	std::cout << "XP: " << stats.xp << "Needed XP: " << stats.xpNeeded << "Level: " << stats.level << std::endl;
+
+	// XP bar
+	float t = float(stats.xp) / float(stats.xpNeeded);
+	XP_current.setSize({ XP_needed.getSize().x*t, XP_needed.getSize().y });
+
+	// Level
+	std::stringstream ss_level;
+	ss_level << stats.level << std::endl;
+	level_text->setString(ss_level.str());
+	level_text->setOrigin({ level_text->getGlobalBounds().size.x / 2, level_text->getGlobalBounds().size.y / 2 });
+	float correction = (windowsize.y / 32) / 5;
+	level_text->setPosition({XP_needed.getPosition().x + (XP_needed.getSize().x/2), XP_needed.getPosition().y + (XP_needed.getSize().y / 2) + correction });
 }
 
 void Player::Player_Update(Vector2f windowsize)
@@ -164,4 +208,7 @@ void Player::Player_Render(RenderWindow* window)
 	window->draw(*green_sapphire_text);
 	window->draw(*yellow_sapphire_text);
 	window->draw(*orange_sapphire_text);
+	window->draw(XP_needed);
+	window->draw(XP_current);
+	window->draw(*level_text);
 }
