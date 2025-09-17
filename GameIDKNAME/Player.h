@@ -29,10 +29,6 @@ struct Stats
 	struct TowerStats
 	{
 		size_t index;
-		float x;
-		float y;
-		float sizeX;
-		float sizeY;
 		char type;
 		bool towerplaced;
 		uint8_t towerlevel;

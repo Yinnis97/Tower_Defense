@@ -72,7 +72,7 @@ void Grid::Grid_Init(Vector2f windowsize)
 		bottom.build = false;
 		bottom.shape.setFillColor(Color::White);
 		bottom.shape.setSize({ windowsize.x/TOWER_SIZE, windowsize.x/TOWER_SIZE });
-		bottom.shape.setPosition({(windowsize.x/TOWER_START_POS)+k,windowsize.y - (windowsize.y/9)});
+		bottom.shape.setPosition({(windowsize.x/TOWER_START_POS)+k,windowsize.y - (windowsize.y/8)});
 		buildplots.push_back(bottom);
 		k = k + (windowsize.x / TOWER_SPACE);
 	}
@@ -119,15 +119,21 @@ void Grid::Grid_LoadShaders(Vector2f windowsize)
 	bottomsectionshader.setUniform("resolution", windowsize);
 }
 
-void Grid::Grid_SelectTower(Vector2f Mousepos, Vector2f windowsize, size_t index)
+void Grid::Grid_SelectTower(Vector2f Mousepos, Vector2f windowsize)
 {
-	TowerOptions = true;
-	Index_ = index;
-
-	for (size_t s = 0; s < toweroptionsrect.size(); s++)
+	for (size_t index = 0; index < buildplots.size(); index++)
 	{
-		toweroptionsrect[s].setPosition({ buildplots[index].shape.getPosition().x + (s * toweroptionsrect[s].getSize().x),
-			buildplots[index].shape.getPosition().y + buildplots[index].shape.getSize().y});
+		if (buildplots[index].shape.getGlobalBounds().contains(Mousepos) && (!buildplots[index].build))
+		{
+			TowerOptions = true;
+			Index_ = index;
+
+			for (size_t s = 0; s < toweroptionsrect.size(); s++)
+			{
+				toweroptionsrect[s].setPosition({ buildplots[index].shape.getPosition().x + (s * toweroptionsrect[s].getSize().x),
+					buildplots[index].shape.getPosition().y + buildplots[index].shape.getSize().y + (windowsize.x / 1000) });
+			}
+		}
 	}
 }
 
@@ -150,13 +156,9 @@ void Grid::Grid_Update(Vector2f Mousepos,Vector2f windowsize, float dt, Stats* s
 		if (!leftMousepressed)
 		{
 			leftMousepressed = true;
-			for (size_t m = 0; m < buildplots.size(); m++)
-			{
-				if (buildplots[m].shape.getGlobalBounds().contains(Mousepos) && (!buildplots[m].build))
-				{
-					Grid_SelectTower(Mousepos, windowsize, m);
-				}
-			}
+
+			Grid_SelectTower(Mousepos, windowsize);
+
 			if (TowerOptions)
 			{
 				for (size_t m = 0; m < toweroptionsrect.size(); m++)
@@ -196,6 +198,7 @@ void Grid::Grid_Update(Vector2f Mousepos,Vector2f windowsize, float dt, Stats* s
 							break;
 
 						}
+						TowerOptions = false;
 					}
 				}
 			}

@@ -183,10 +183,6 @@ void Game::SaveGame()
 	for (size_t i = 0; i < grid->towers.size(); i++)
 	{
 		player->stats.towerstats[i].index = grid->towers[i]->index;
-		player->stats.towerstats[i].x = grid->towers[i]->shape.getPosition().x;
-		player->stats.towerstats[i].y = grid->towers[i]->shape.getPosition().y;
-		player->stats.towerstats[i].sizeX = grid->towers[i]->shape.getSize().x;
-		player->stats.towerstats[i].sizeY = grid->towers[i]->shape.getSize().y;
 		player->stats.towerstats[i].type = grid->towers[i]->type;
 		player->stats.towerstats[i].towerlevel = grid->towers[i]->level;
 	}
