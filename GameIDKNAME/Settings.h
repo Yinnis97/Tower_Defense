@@ -10,7 +10,6 @@ using namespace sf;
 class Settings
 {
 private:
-	Font font;
 
 	RectangleShape taskbar;
 	RectangleShape quitButton;
@@ -37,10 +36,10 @@ private:
 public:
 	
 
-	Settings(Vector2f windowsize);
+	Settings(Vector2f windowsize, Font* font);
 	~Settings();
 
-	void Settings_Init(Vector2f windowsize);
+	void Settings_Init(Vector2f windowsize, Font* font);
 
 	void Settings_Update(Vector2f windowsize, Vector2f mousepos, bool* paused, bool* save, bool* quit);
 	void Settings_Render(RenderWindow* window);

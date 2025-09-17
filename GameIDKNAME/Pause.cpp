@@ -1,8 +1,8 @@
 #include "Pause.h"
 
-Pause::Pause(Vector2f windowsize)
+Pause::Pause(Vector2f windowsize, Font* font)
 {
-	Pause_Init(windowsize);
+	Pause_Init(windowsize, font);
 }
 
 Pause::~Pause()
@@ -10,7 +10,7 @@ Pause::~Pause()
 
 }
 
-void Pause::Pause_Init(Vector2f windowsize)
+void Pause::Pause_Init(Vector2f windowsize, Font* font)
 {
 	// Background
 	background.setFillColor(Color::White);

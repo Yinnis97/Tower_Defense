@@ -14,13 +14,12 @@ private:
 	Shader backgroundShader;
 
 	std::optional<Text> pause_text;
-	Font font;
 
 public:
-	Pause(Vector2f windowsize);
+	Pause(Vector2f windowsize, Font* font);
 	~Pause();
 
-	void Pause_Init(Vector2f windowsize);
+	void Pause_Init(Vector2f windowsize, Font* font);
 
 	void Pause_Update(Vector2f mousepos, Vector2f windowsize);
 	void Pause_Render(RenderWindow* window);

@@ -24,7 +24,6 @@ private:
 
 	Shader backgroundShader;
 
-	Font font;
 	Clock shaderClock;
 
 	Color* blue_green_color;
@@ -36,10 +35,10 @@ private:
 	bool creditspressed;
 
 public:
-	Menu(Vector2f windowsize);
+	Menu(Vector2f windowsize, Font* font);
 	~Menu();
 
-	void Menu_Init(Vector2f windowsize);
+	void Menu_Init(Vector2f windowsize, Font* font);
 	
 	void Menu_LoadCredits();
 

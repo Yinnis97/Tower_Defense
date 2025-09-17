@@ -33,7 +33,7 @@ private:
 
 	Clock dt_clock;
 	float dt;
-
+	Font font;
 
 public:
 	bool loadGame;

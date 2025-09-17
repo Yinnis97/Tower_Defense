@@ -1,7 +1,7 @@
 #include "Entity.h"
 
 
-void Entity::Entity_Init(Vector2f windowsize)
+void Entity::Entity_Init(Vector2f windowsize, Font* font)
 {
 	Color lvltxtclr(100, 100, 100, 255);
 
@@ -13,12 +13,7 @@ void Entity::Entity_Init(Vector2f windowsize)
 	fullhealthbar.setOrigin({ fullhealthbar.getSize().x / 2,fullhealthbar.getSize().y/2 });
 	healthbar.setOrigin(fullhealthbar.getOrigin());
 
-	if (!font.openFromFile("Fonts/PixeloidSans.ttf"))
-	{
-		std::cout << "Error: Can't load Font! -> Player_Init" << std::endl;
-	}
-
-	level_text.emplace(font);
+	level_text.emplace(*font);
 	level_text->setCharacterSize(windowsize.x / 150);
 	level_text->setFillColor(lvltxtclr);
 	

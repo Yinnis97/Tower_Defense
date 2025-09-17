@@ -1,12 +1,12 @@
 #include "Menu.h"
 
-Menu::Menu(Vector2f windowsize)
+Menu::Menu(Vector2f windowsize, Font* font)
 {
 	mousepressed = false;
 	startpressed = false;
 	loadpressed = false;
 	creditspressed = false;
-	Menu_Init(windowsize);
+	Menu_Init(windowsize, font);
 	shaderClock.restart();
 }
 
@@ -15,16 +15,10 @@ Menu::~Menu()
 
 }
 
-void Menu::Menu_Init(Vector2f windowsize)
+void Menu::Menu_Init(Vector2f windowsize, Font* font)
 {
 	// Spacing for buttons
 	float spacing = windowsize.y / 15;
-
-	// Font
-	if (!font.openFromFile("Fonts/PixeloidSans.ttf"))
-	{
-		std::cout << "Error: Can't load Font! -> Menu_Init" << std::endl;
-	}
 
 	// Colors
 	dark_gray_color = new Color(96, 96, 96, 255);
@@ -65,7 +59,7 @@ void Menu::Menu_Init(Vector2f windowsize)
 	creditsbutton.setPosition({ windowsize.x / 2,loadbutton.getPosition().y + spacing});
 
 	// Start Button Text
-	start_text.emplace(font);
+	start_text.emplace(*font);
 	start_text->setCharacterSize(windowsize.x / 40);
 	start_text->setFillColor(*dark_gray_color);
 	start_text->setString("Start");
@@ -73,7 +67,7 @@ void Menu::Menu_Init(Vector2f windowsize)
 	start_text->setPosition({ windowsize.x / 2, (windowsize.y / 2) - (windowsize.y/90)});
 
 	// Load Button Text
-	load_text.emplace(font);
+	load_text.emplace(*font);
 	load_text->setCharacterSize(windowsize.x / 40);
 	load_text->setFillColor(*dark_gray_color);
 	load_text->setString("Load");
@@ -81,7 +75,7 @@ void Menu::Menu_Init(Vector2f windowsize)
 	load_text->setPosition({ windowsize.x / 2, start_text->getPosition().y + spacing});
 
 	// Credits Button Text
-	credits_text.emplace(font);
+	credits_text.emplace(*font);
 	credits_text->setCharacterSize(windowsize.x / 40);
 	credits_text->setFillColor(*dark_gray_color);
 	credits_text->setString("Credits");
@@ -89,7 +83,7 @@ void Menu::Menu_Init(Vector2f windowsize)
 	credits_text->setPosition({ windowsize.x / 2, load_text->getPosition().y + spacing});
 
 	// Header Text
-	header_text.emplace(font);
+	header_text.emplace(*font);
 	header_text->setCharacterSize(windowsize.x / 20);
 	header_text->setFillColor(*dark_gray_color);
 	header_text->setString("Tower Defence By Y.K.");

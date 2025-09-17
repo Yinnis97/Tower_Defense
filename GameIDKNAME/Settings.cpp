@@ -1,25 +1,21 @@
 #include "Settings.h"
 
-Settings::Settings(Vector2f windowsize)
+Settings::Settings(Vector2f windowsize, Font* font)
 {
 	mousepressed = false;
 	pausepressed = false;
 	quitpressed = false;
 	savepressed = false;
 	temppressed = false;
-	Settings_Init(windowsize);
+	Settings_Init(windowsize, font);
 }
 
 Settings::~Settings()
 {
 }
 
-void Settings::Settings_Init(Vector2f windowsize)
+void Settings::Settings_Init(Vector2f windowsize, Font* font)
 {
-	if (!font.openFromFile("Fonts/PixeloidSans.ttf"))
-	{
-		std::cout << "Error: Can't load Font! -> Settings_Init" << std::endl;
-	}
 	isPressedcolor = new Color(0, 150, 0, 255);
 	outlineColor = new Color(120, 120, 120, 255);
 	buttonColor = new Color(80, 80, 80, 255);
@@ -62,28 +58,28 @@ void Settings::Settings_Init(Vector2f windowsize)
 	saveButton.setOutlineThickness(outlineSize);
 
 	// Pause text
-	pause_text.emplace(font);
+	pause_text.emplace(*font);
 	pause_text->setCharacterSize(windowsize.x / 80);
 	pause_text->setString("Pause");
 	pause_text->setOrigin({pause_text->getGlobalBounds().size.x/2, pause_text->getGlobalBounds().size.y/2});
 	pause_text->setPosition({ pauseButton.getGlobalBounds().getCenter().x, pauseButton.getGlobalBounds().getCenter().y - (pauseButton.getSize().y/5)});
 
 	// Quit text
-	quit_text.emplace(font);
+	quit_text.emplace(*font);
 	quit_text->setCharacterSize(windowsize.x / 80);
 	quit_text->setString("Quit");
 	quit_text->setOrigin({ quit_text->getGlobalBounds().size.x / 2, quit_text->getGlobalBounds().size.y / 2 });
 	quit_text->setPosition({ quitButton.getGlobalBounds().getCenter().x, quitButton.getGlobalBounds().getCenter().y - (quitButton.getSize().y / 5) });
 
 	// Save text
-	save_text.emplace(font);
+	save_text.emplace(*font);
 	save_text->setCharacterSize(windowsize.x / 80);
 	save_text->setString("Save");
 	save_text->setOrigin({ save_text->getGlobalBounds().size.x / 2, save_text->getGlobalBounds().size.y / 2 });
 	save_text->setPosition({ saveButton.getGlobalBounds().getCenter().x, saveButton.getGlobalBounds().getCenter().y - (saveButton.getSize().y / 5) });
 
 	// Temp text
-	temp_text.emplace(font);
+	temp_text.emplace(*font);
 	temp_text->setCharacterSize(windowsize.x / 80);
 	temp_text->setString("Temp");
 	temp_text->setOrigin({ temp_text->getGlobalBounds().size.x / 2, temp_text->getGlobalBounds().size.y / 2 });

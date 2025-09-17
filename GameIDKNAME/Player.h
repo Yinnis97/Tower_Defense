@@ -47,7 +47,6 @@ public:
 
 	Stats stats;
 	
-	Font font;
 	float spacing;
 	
 	RectangleShape XP_needed;
@@ -64,10 +63,10 @@ public:
 	std::optional<Text> yellow_sapphire_text;
 	std::optional<Text> orange_sapphire_text;
 
-	Player(Vector2f windowsize);
+	Player(Vector2f windowsize, Font* font);
 	~Player();
 
-	void Player_Init(Vector2f windowsize);
+	void Player_Init(Vector2f windowsize, Font* font);
 
 	void Player_ProccessLoot(Vector2u loot);
 	void Player_UpdateLevel(uint32_t xpGained, Vector2f windowsize);

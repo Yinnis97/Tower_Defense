@@ -15,10 +15,10 @@ private:
 
 public:
 
-	Entity(const Vector2f windowsize, uint16_t lvl, int hp, char type)
+	Entity(const Vector2f windowsize, uint16_t lvl, int hp, char type, Font* font)
 		: startpos(windowsize), level(lvl), health(hp), ID(type), direction(0), lastdir(6,false), ms(10), maxhealth(hp)
 	{
-		Entity_Init(windowsize);
+		Entity_Init(windowsize, font);
 	}
 
 	const Vector2f startpos;
@@ -29,14 +29,13 @@ public:
 	RectangleShape fullhealthbar;
 	RectangleShape healthbar;
 	std::optional<Text> level_text;
-	Font font;
 
 	float ms;
 	size_t direction;
 	std::vector<bool> lastdir;
 
 	virtual void Entity_InitSprite(Vector2f windowsize) = 0;
-	void Entity_Init(Vector2f windowsize);
+	void Entity_Init(Vector2f windowsize, Font* font);
 
 	int8_t Entity_GetHealth();
 	char Entity_GetID();

@@ -21,6 +21,13 @@ void Game::Init_Var()
 	quit = false;
 	save = false;
 
+	// Font
+	if (!font.openFromFile("Fonts/PixeloidSans.ttf"))
+	{
+		std::cout << "Error: Can't load Font! -> Menu_Init" << std::endl;
+
+	}
+
 	spawninterval = 0.0f;
 	dt = dt_clock.restart().asSeconds();
 }
@@ -31,16 +38,16 @@ void Game::Init_Window()
 	window = new RenderWindow(videomode, "DIKKE GAME", State::Fullscreen);
 	window->setVerticalSyncEnabled(true);
 
-	menu = new Menu(GetWindowSize());
+	menu = new Menu(GetWindowSize(), &font);
 }
 
 void Game::Init_Game()
 {
 	srand(time(NULL));
 	grid = new Grid(GetWindowSize());
-	player = new Player(GetWindowSize());
-	settings = new Settings(GetWindowSize());
-	pause = new Pause(GetWindowSize());
+	player = new Player(GetWindowSize(), &font);
+	settings = new Settings(GetWindowSize(), &font);
+	pause = new Pause(GetWindowSize(), &font);
 }
 
 bool Game::Running()
@@ -215,10 +222,10 @@ void Game::EntitySpawn()
 		switch (random)
 		{
 		case 99:
-			entities.push_back(new Boss(GetWindowSize(),1));
+			entities.push_back(new Boss(GetWindowSize(), 1, &font));
 			break;
 		default:
-			entities.push_back(new Enemy(GetWindowSize(),1));
+			entities.push_back(new Enemy(GetWindowSize(), 1, &font));
 
 			break;
 		}
