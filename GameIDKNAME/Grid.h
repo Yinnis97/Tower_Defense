@@ -55,7 +55,9 @@ public:
 	Texture sniperTexture;
 	Texture rocketTexture;
 
-	bool TowerOptions;
+	bool towerOptionsPressed;
+	bool selectTowerPressed;
+	bool showingTowerOptions;
 	size_t Index_;
 
 	Clock shaderclock;
@@ -70,8 +72,9 @@ public:
 
 	void Grid_Init(Vector2f windowsize);
 	void Grid_LoadShaders(Vector2f windowsize);
-	void Grid_SelectTower(Vector2f Mousepos, Vector2f windowsize);
 	void Grid_UpdateShaders();
+	void Grid_ShowTowerOptions(Vector2f Mousepos, Vector2f windowsize);
+	void Grid_SelectTower(Vector2f Mousepos, Vector2f windowsize, Stats* stats);
 	void Grid_Update(Vector2f Mousepos, Vector2f windowsize, float dt, Stats* stats);
 	void Grid_Render(RenderWindow* window);
 };
