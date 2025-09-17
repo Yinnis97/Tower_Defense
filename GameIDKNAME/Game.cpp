@@ -40,6 +40,7 @@ void Game::Init_Game()
 	grid = new Grid(GetWindowSize());
 	player = new Player(GetWindowSize());
 	settings = new Settings(GetWindowSize());
+	pause = new Pause(GetWindowSize());
 }
 
 bool Game::Running()
@@ -298,7 +299,7 @@ void Game::Update()
 	}
 	else if (paused)
 	{
-		menu->Menu_Update(GetMousePos(), GetWindowSize(), &inMenu, &loadGame);
+		pause->Pause_Update(GetMousePos(), GetWindowSize());
 		settings->Settings_Update(GetWindowSize(), GetMousePos(), &paused, &save, &quit);
 	}
 	else
@@ -332,7 +333,7 @@ void Game::Render()
 	}
 	else if (paused)
 	{
-		menu->Menu_Render(this->window);
+		pause->Pause_Render(this->window);
 		settings->Settings_Render(this->window);
 	}
 	else

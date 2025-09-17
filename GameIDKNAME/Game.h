@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Menu.h"
 #include "Settings.h"
+#include "Pause.h"
 
 using namespace sf;
 
@@ -28,6 +29,7 @@ private:
 	Player* player;
 	Menu* menu;
 	Settings* settings;
+	Pause* pause;
 
 	Clock dt_clock;
 	float dt;
