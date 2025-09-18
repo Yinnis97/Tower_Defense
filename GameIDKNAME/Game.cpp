@@ -20,6 +20,7 @@ void Game::Init_Var()
 	loadGame = false;
 	quit = false;
 	save = false;
+	entities.reserve(100);
 
 	// Font
 	if (!font.openFromFile("Fonts/PixeloidSans.ttf"))
@@ -245,7 +246,7 @@ void Game::EntitySpawn()
 {
 	spawninterval += dt;
 
-	if (spawninterval >= 1.0)
+	if (spawninterval >= 0.5)
 	{
 		uint8_t random = rand() % 100;
 
@@ -307,7 +308,8 @@ void Game::EntityHitDetection(size_t index)
 
 		player->Player_ProccessLoot(entities[index]->Entity_DropLoot());
 
-		entities.erase(entities.begin() + index);
+		entities[index] = std::move(entities.back());
+		entities.pop_back();
 	}
 }
 

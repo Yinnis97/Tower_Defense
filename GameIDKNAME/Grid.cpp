@@ -3,11 +3,14 @@
 Grid::Grid(Vector2f windowsize)
 {
 	Grid_Init(windowsize);
-	leftMousepressed = false;
-	rightMousepressed = false;
+	GP_mousepressed = false;
+	GU_mousepressed = false;
 	towerOptionsPressed = false;
 	selectTowerPressed = false;
 	showingTowerOptions = false;
+	levelOptionsPressed = false;
+	levelUpPressed = false;
+	showingLevelOptions = false;
 	shaderclock.restart();
 }
 
@@ -22,6 +25,9 @@ void Grid::Grid_Init(Vector2f windowsize)
 	sniperTexture.loadFromFile("Textures/Sniper.png");
 	rocketTexture.loadFromFile("Textures/Rocket.png");
 
+	level1Texture.loadFromFile("Textures/Upgrade_lvl_1.png");
+	level10Texture.loadFromFile("Textures/Upgrade_lvl_10.png");
+	level100Texture.loadFromFile("Textures/Upgrade_lvl_100.png");
 
 	// Background sandish
 	sand.setFillColor(Color::White);
@@ -106,8 +112,32 @@ void Grid::Grid_Init(Vector2f windowsize)
 		toweroptionsrect.push_back(option);
 	}
 
-	Grid_LoadShaders(windowsize);
+	// Level Up Options
+	for (size_t s = 0; s < LEVEL_UP_OPTIONS; s++)
+	{
+		RectangleShape leveloption;
+		leveloption.setOutlineColor(Color::Black);
+		// verander texture
+		switch (s)
+		{
+		case 0:
+			leveloption.setTexture(&level1Texture); // 1 level
+			break;
+		case 1:
+			leveloption.setTexture(&level10Texture); // 10 levels
+			break;
+		case 2:
+			leveloption.setTexture(&level100Texture); // 100 levels
+			break;
+		default:
+			break;
+		}
+		leveloption.setOutlineThickness(windowsize.x / 1000);
+		leveloption.setSize({ windowsize.x / 50, windowsize.x / 50 });
+		leveloptionsrect.push_back(leveloption);
+	}
 
+	Grid_LoadShaders(windowsize);
 }
 
 void Grid::Grid_LoadShaders(Vector2f windowsize)
@@ -136,7 +166,7 @@ void Grid::Grid_ShowTowerOptions(Vector2f mousepos, Vector2f windowsize)
 {
 	for (size_t index = 0; index < buildplots.size(); index++)
 	{
-		if (buildplots[index].shape.getGlobalBounds().contains(mousepos) && (!buildplots[index].build) && towerOptionsPressed)
+		if (buildplots[index].shape.getGlobalBounds().contains(mousepos))
 		{
 			showingTowerOptions = true;
 			Index_ = index;
@@ -153,7 +183,7 @@ void Grid::Grid_SelectTower(Vector2f mousepos, Vector2f windowsize, Stats* stats
 {
 	for (size_t m = 0; m < toweroptionsrect.size(); m++)
 	{
-		if (toweroptionsrect[m].getGlobalBounds().contains(mousepos) && (!buildplots[Index_].build) && selectTowerPressed)
+		if (toweroptionsrect[m].getGlobalBounds().contains(mousepos) && (!buildplots[Index_].build))
 		{
 			switch (m)
 			{
@@ -193,19 +223,16 @@ void Grid::Grid_SelectTower(Vector2f mousepos, Vector2f windowsize, Stats* stats
 	}
 }
 
-void Grid::Grid_Update(Vector2f mousepos,Vector2f windowsize, float dt, Stats* stats)
+void Grid::Grid_PlaceTowers(Vector2f mousepos, Vector2f windowsize, Stats* stats)
 {
-	Grid_UpdateShaders();
-
-	// Place towers
 	if (Mouse::isButtonPressed(Mouse::Button::Left))
 	{
-		if (!leftMousepressed)
+		if (!GP_mousepressed)
 		{
-			leftMousepressed = true;
+			GP_mousepressed = true;
 			for (size_t index = 0; index < buildplots.size(); index++)
 			{
-				if (buildplots[index].shape.getGlobalBounds().contains(mousepos))
+				if (buildplots[index].shape.getGlobalBounds().contains(mousepos) && (!buildplots[index].build))
 				{
 					towerOptionsPressed = true;
 				}
@@ -225,29 +252,101 @@ void Grid::Grid_Update(Vector2f mousepos,Vector2f windowsize, float dt, Stats* s
 	}
 	else
 	{
-		Grid_ShowTowerOptions(mousepos, windowsize);
-		Grid_SelectTower(mousepos, windowsize, stats);
+		if (towerOptionsPressed)
+		{
+			Grid_ShowTowerOptions(mousepos, windowsize);
+		}
+		if (selectTowerPressed)
+		{
+			Grid_SelectTower(mousepos, windowsize, stats);
+		}
 
 		selectTowerPressed = false;
 		towerOptionsPressed = false;
-		leftMousepressed = false;
+		GP_mousepressed = false;
 	}
+}
 
-	// Upgrade towers
-	if (Mouse::isButtonPressed(Mouse::Button::Right))
+void Grid::Grid_ShowLevelUpOptions(Vector2f mousepos, Vector2f windowsize)
+{
+	for (size_t m = 0; m < towers.size(); m++)
 	{
-		if (!rightMousepressed)
+		if (towers[m]->shape.getGlobalBounds().contains(mousepos))
 		{
-			rightMousepressed = true;
+			showingLevelOptions = true;
+			TowerIndexLevelUp = m;
+			for (size_t s = 0; s < leveloptionsrect.size(); s++)
+			{
+				leveloptionsrect[s].setPosition({ towers[m]->shape.getPosition().x + (s * leveloptionsrect[s].getSize().x),
+					towers[m]->shape.getPosition().y + towers[m]->shape.getSize().y + (windowsize.x / 1000) });
+			}
+		}
+	}
+}
+
+void Grid::Grid_SelectLevelUp(Vector2f mousepos, Vector2f windowsize, Stats* stats)
+{
+	for (size_t m = 0; m < leveloptionsrect.size(); m++)
+	{
+		if (leveloptionsrect[m].getGlobalBounds().contains(mousepos))
+		{
+			switch (m)
+			{
+			case 0:
+				if (stats->resources.copper >= towers[TowerIndexLevelUp]->upgradePrice)
+				{
+					stats->resources.copper = stats->resources.copper - towers[TowerIndexLevelUp]->upgradePrice;
+					towers[TowerIndexLevelUp]->level++;
+					towers[TowerIndexLevelUp]->Tower_UpdateDamage();
+				}
+				break;
+			case 1:
+				if (stats->resources.copper >= (towers[TowerIndexLevelUp]->upgradePrice * 10))
+				{
+					stats->resources.copper = stats->resources.copper - (towers[TowerIndexLevelUp]->upgradePrice * 10);
+					towers[TowerIndexLevelUp]->level+=10;
+					towers[TowerIndexLevelUp]->Tower_UpdateDamage();
+				}
+				break;
+			case 2:
+				if (stats->resources.copper >= (towers[TowerIndexLevelUp]->upgradePrice * 100))
+				{
+					stats->resources.copper = stats->resources.copper - (towers[TowerIndexLevelUp]->upgradePrice * 100);
+					towers[TowerIndexLevelUp]->level+=100;
+					towers[TowerIndexLevelUp]->Tower_UpdateDamage();
+				}
+				break;
+			default:
+				break;
+
+			}
+			showingLevelOptions = false;
+		}
+	}
+}
+
+void Grid::Grid_UpgradeTowers(Vector2f mousepos, Vector2f windowsize, Stats* stats)
+{
+	if (Mouse::isButtonPressed(Mouse::Button::Left))
+	{
+		if (!GU_mousepressed)
+		{
+			GU_mousepressed = true;
 			for (size_t m = 0; m < towers.size(); m++)
 			{
 				if (towers[m]->shape.getGlobalBounds().contains(mousepos))
 				{
-					if (stats->resources.copper >= towers[m]->upgradePrice)
+					levelOptionsPressed = true;
+				}
+			}
+
+			if (showingLevelOptions)
+			{
+				for (size_t m = 0; m < leveloptionsrect.size(); m++)
+				{
+					if (leveloptionsrect[m].getGlobalBounds().contains(mousepos))
 					{
-						stats->resources.copper = stats->resources.copper - towers[m]->upgradePrice;
-						towers[m]->level++;
-						towers[m]->Tower_UpdateDamage();
+						levelUpPressed = true;
 					}
 				}
 			}
@@ -256,8 +355,26 @@ void Grid::Grid_Update(Vector2f mousepos,Vector2f windowsize, float dt, Stats* s
 	}
 	else
 	{
-		rightMousepressed = false;
+		if (levelOptionsPressed)
+		{
+			Grid_ShowLevelUpOptions(mousepos, windowsize);
+		}
+		if (levelUpPressed)
+		{
+			Grid_SelectLevelUp(mousepos, windowsize, stats);
+		}
+
+		levelOptionsPressed = false;
+		levelUpPressed = false;
+		GU_mousepressed = false;
 	}
+}
+
+void Grid::Grid_Update(Vector2f mousepos,Vector2f windowsize, float dt, Stats* stats)
+{
+	Grid_UpdateShaders();
+	Grid_PlaceTowers(mousepos, windowsize, stats);
+	Grid_UpgradeTowers(mousepos, windowsize, stats);
 
 	// Update towers
 	for (size_t t = 0; t < towers.size(); t++)
@@ -292,6 +409,15 @@ void Grid::Grid_Render(RenderWindow* window)
 		for (size_t t = 0; t < toweroptionsrect.size(); t++)
 		{
 			window->draw(toweroptionsrect[t]);
+		}
+	}
+
+	// Render level options 
+	if (showingLevelOptions)
+	{
+		for (size_t t = 0; t < leveloptionsrect.size(); t++)
+		{
+			window->draw(leveloptionsrect[t]);
 		}
 	}
 
