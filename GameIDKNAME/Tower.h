@@ -14,7 +14,8 @@ private:
 	Vector2f direction;
 	Vector2f position;
 	Vector2f size;
-	uint32_t damage;
+	int32_t damage;
+	int32_t baseDamage;
 	float firerate;
 	float speed;
 	float radius;
@@ -32,8 +33,8 @@ public:
 	std::vector<Bullet> bullets;
 	size_t index;
 
-	Tower(Vector2f pos, Vector2f size, float spd, char type, float firerate, uint32_t dmg, float rds, uint32_t upPrice) :
-		position(pos), size(size), speed(spd), type(type), firerate(firerate), damage(dmg), radius(rds), upgradePrice(upPrice), lastshot(0.0), level(1) {}
+	Tower(Vector2f pos, Vector2f size, float spd, char type, float firerate, int32_t dmg, float rds, uint32_t upPrice) :
+		position(pos), size(size), speed(spd), type(type), firerate(firerate), damage(dmg), radius(rds), upgradePrice(upPrice), lastshot(0.0), level(1), baseDamage(dmg) {}
 
 	~Tower();
 	virtual void Tower_Init(Vector2f pos, Vector2f size) = 0;

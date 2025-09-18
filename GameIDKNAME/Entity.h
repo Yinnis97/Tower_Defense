@@ -9,13 +9,13 @@ using namespace sf;
 class Entity
 {
 private:
-	int8_t health;
-	int8_t maxhealth;
+	int32_t health;
+	int32_t maxhealth;
 	char ID;
 
 public:
 
-	Entity(const Vector2f windowsize, uint16_t lvl, int hp, char type, Font* font)
+	Entity(const Vector2f windowsize, uint16_t lvl, int32_t hp, char type, Font* font)
 		: startpos(windowsize), level(lvl), health(hp), ID(type), direction(0), lastdir(6,false), ms(10), maxhealth(hp)
 	{
 		Entity_Init(windowsize, font);
@@ -24,7 +24,7 @@ public:
 	const Vector2f startpos;
 	Texture texture;
 	std::optional<Sprite> sprite;
-	int16_t level;
+	uint16_t level;
 
 	RectangleShape fullhealthbar;
 	RectangleShape healthbar;
@@ -37,10 +37,10 @@ public:
 	virtual void Entity_InitSprite(Vector2f windowsize) = 0;
 	void Entity_Init(Vector2f windowsize, Font* font);
 
-	int8_t Entity_GetHealth();
+	int32_t Entity_GetHealth();
 	char Entity_GetID();
 
-	void Entity_TakeDmg(int8_t dmg);
+	void Entity_TakeDmg(int32_t dmg);
 	void Entity_UpdateHealthBar(Vector2f windowsize);
 	void Entity_UpdateLevel(Vector2f windowsize);
 

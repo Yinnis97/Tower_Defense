@@ -5,7 +5,7 @@ class Rocket :
 {
 private:
 public:
-    Rocket(Vector2f pos, Vector2f size, float speed, char type = 'R', float firerate = 2, uint32_t dmg = 8, float rds = 9, uint32_t upPrice = 20)
+    Rocket(Vector2f pos, Vector2f size, float speed, char type = 'R', float firerate = 2, int32_t dmg = 8, float rds = 9, uint32_t upPrice = 20)
         : Tower(pos, size, speed, type, firerate, dmg, rds, upPrice)
     {
         Tower_Init(pos,size);

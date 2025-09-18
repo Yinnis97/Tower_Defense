@@ -19,7 +19,7 @@ void Entity::Entity_Init(Vector2f windowsize, Font* font)
 	
 }
 
-int8_t Entity::Entity_GetHealth()
+int32_t Entity::Entity_GetHealth()
 {
     return this->health;
 }
@@ -29,7 +29,7 @@ char Entity::Entity_GetID()
     return this->ID;
 }
 
-void Entity::Entity_TakeDmg(int8_t dmg)
+void Entity::Entity_TakeDmg(int32_t dmg)
 {
     this->health = this->health - dmg;
 }

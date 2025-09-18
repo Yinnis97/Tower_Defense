@@ -6,7 +6,7 @@ class Enemy :
 private:
 
 public:
-    Enemy(Vector2f windowsize, uint16_t lvl, Font* font, int8_t hp = 2, char type = 'E') : Entity(windowsize, lvl, hp, type, font)
+    Enemy(Vector2f windowsize, uint16_t lvl, Font* font, int32_t hp = 2, char type = 'E') : Entity(windowsize, lvl, hp, type, font)
     {
         this->Entity_InitSprite(windowsize);
     }

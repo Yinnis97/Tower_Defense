@@ -7,7 +7,7 @@ class Boss :
 private:
 
 public:
-    Boss(const Vector2f windowsize, uint16_t lvl, Font* font, int8_t hp = 10, char type = 'B') : Entity(windowsize, lvl, hp, type, font)
+    Boss(const Vector2f windowsize, uint16_t lvl, Font* font, int32_t hp = 10, char type = 'B') : Entity(windowsize, lvl, hp, type, font)
     {
         this->Entity_InitSprite(windowsize);
     }

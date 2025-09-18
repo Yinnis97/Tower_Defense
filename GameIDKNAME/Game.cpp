@@ -133,7 +133,6 @@ void Game::LoadGame()
 
 		switch (player->stats.towerstats[i].type)
 		{
-
 		case 'T':
 			grid->towers.push_back(new Turret({ grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().x,
 					grid->buildplots[player->stats.towerstats[i].index].shape.getPosition().y },
@@ -179,6 +178,7 @@ void Game::SaveGame()
 	{
 		player->stats.towerstats[i].towerplaced = grid->buildplots[i].build;
 	}
+
 	// Get placed towers
 	for (size_t i = 0; i < grid->towers.size(); i++)
 	{
@@ -207,6 +207,40 @@ void Game::SaveGame()
 	}
 }
 
+void Game::CreateDmgNumber(int32_t dmg, Vector2f pos)
+{
+	dmgnumbers.emplace_back();
+	dmgnumbers.back().text.emplace(font);
+	dmgnumbers.back().text->setCharacterSize(GetWindowSize().x / 100);
+	dmgnumbers.back().text->setPosition({ pos.x,pos.y });
+	dmgnumbers.back().text->setFillColor(Color::Red);
+
+	std::stringstream ss_dmg;
+	ss_dmg << dmg << std::endl;
+	dmgnumbers.back().text->setString(ss_dmg.str());
+}
+
+void Game::UpdateDmgNumbers()
+{
+	for (size_t i = 0; i < dmgnumbers.size(); i++)
+	{
+		dmgnumbers[i].dt += dt;
+
+		if (dmgnumbers[i].dt >= 0.5)
+		{
+			dmgnumbers.erase(dmgnumbers.begin() + i);
+		}
+	}
+}
+
+void Game::RenderDmgNumbers()
+{
+	for (size_t i = 0; i < dmgnumbers.size(); i++)
+	{
+		window->draw(*dmgnumbers[i].text);
+	}
+}
+
 void Game::EntitySpawn()
 {
 	spawninterval += dt;
@@ -218,10 +252,10 @@ void Game::EntitySpawn()
 		switch (random)
 		{
 		case 99:
-			entities.push_back(new Boss(GetWindowSize(), 1, &font));
+			entities.push_back(std::make_unique<Boss>(GetWindowSize(), 1, &font));
 			break;
 		default:
-			entities.push_back(new Enemy(GetWindowSize(), 1, &font));
+			entities.push_back(std::make_unique<Boss>(GetWindowSize(), 1, &font));
 
 			break;
 		}
@@ -241,8 +275,9 @@ void Game::EntityHitDetection(size_t index)
 			if (entities[index]->sprite->getGlobalBounds().contains(grid->towers[i]->bullets[j].shape.getPosition()))
 			{
 				entities[index]->Entity_TakeDmg(grid->towers[i]->bullets[j].damage);
+				CreateDmgNumber(grid->towers[i]->bullets[j].damage, grid->towers[i]->bullets[j].shape.getPosition());
 				grid->towers[i]->bullets.erase(grid->towers[i]->bullets.begin() + j);
-				
+
 				if (entities[index]->Entity_GetHealth() <= 0)
 				{
 					entityDied = true;
@@ -308,11 +343,12 @@ void Game::Update()
 	else
 	{
 		EntitySpawn();
+		UpdateDmgNumbers();
 
 		grid->Grid_Update(GetMousePos(), GetWindowSize(), dt, &player->stats);
 		settings->Settings_Update(GetWindowSize(), GetMousePos(), &paused, &save, &quit);
 		player->Player_Update(GetWindowSize());
-		
+
 		for (size_t index = 0; index < entities.size(); index++)
 		{
 			entities[index]->Entity_Update(GetWindowSize(), dt);
@@ -349,6 +385,8 @@ void Game::Render()
 		{
 			entities[e]->Entity_Render(window);
 		}
+
+		RenderDmgNumbers();
 	}
 
 	window->display();

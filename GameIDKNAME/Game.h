@@ -15,13 +15,19 @@
 
 using namespace sf;
 
+struct DamageNumbers
+{
+	std::optional<Text> text;
+	float dt = 0.0;
+};
+
 class Game
 {
 
 private:
 	RenderWindow *window;
 	VideoMode videomode;
-	std::vector<Entity*> entities;
+	std::vector<std::unique_ptr<Entity>> entities;
 	bool mouseheld;
 	float spawninterval;
 
@@ -33,7 +39,7 @@ private:
 
 	Clock dt_clock;
 	float dt;
-	Font font;
+	std::vector<DamageNumbers> dmgnumbers;
 
 public:
 	bool loadGame;
@@ -41,6 +47,8 @@ public:
 	bool paused;
 	bool quit;
 	bool save;
+
+	Font font;
 
 	Game();
 	~Game();
@@ -58,6 +66,10 @@ public:
 
 	void LoadGame();
 	void SaveGame();
+
+	void CreateDmgNumber(int32_t dmg, Vector2f pos);
+	void UpdateDmgNumbers();
+	void RenderDmgNumbers();
 
 	void EntitySpawn();
 	void EntityHitDetection(size_t index);

@@ -26,7 +26,7 @@ void Player::Player_Init(Vector2f windowsize, Font* font)
 
 	stats.resources.gold = 1;
 	stats.resources.silver = 2;
-	stats.resources.copper = 20;
+	stats.resources.copper = 2000;
 	stats.health = 10;
 	stats.xp = 0;
 	stats.level = 1;

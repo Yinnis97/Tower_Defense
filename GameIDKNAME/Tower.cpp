@@ -38,13 +38,13 @@ void Tower::Tower_UpdateDamage()
 	switch (type)
 	{
 	case 'T':
-		damage = 1 * (level);
+		damage = baseDamage * level;
 		break;
 	case 'R':
-		damage = 8 * (level);
+		damage = baseDamage * level;
 		break;
 	case 'S':
-		damage = 15 * (level);
+		damage = baseDamage * level;
 		break;
 	}
 }
