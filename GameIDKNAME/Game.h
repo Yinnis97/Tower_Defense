@@ -17,7 +17,7 @@
 
 using namespace sf;
 
-#define SPAWN_INTERVAL 0.5
+#define SPAWN_INTERVAL 0.8
 #define LEVELUP_INTERVAL 20
 
 struct DamageNumbers

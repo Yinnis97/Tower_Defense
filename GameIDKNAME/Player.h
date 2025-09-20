@@ -37,6 +37,7 @@ struct Stats
 	struct EntityStats
 	{
 		int level;
+		float levelupinterval;
 	} entitystats;
 };
 

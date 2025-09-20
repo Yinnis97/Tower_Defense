@@ -131,6 +131,7 @@ void Game::LoadGame()
 
 	// Set up entity stats
 	entityLevel = player->stats.entitystats.level;
+	levelupinterval = player->stats.entitystats.levelupinterval;
 
 	// Place towers
 	for (size_t i = 0; i < TOWER_AMOUNT_; i++)
@@ -195,6 +196,7 @@ void Game::SaveGame()
 
 	// Get Entity stats
 	player->stats.entitystats.level = entityLevel;
+	player->stats.entitystats.levelupinterval = levelupinterval;
 
 	// Treat as char*
 	char* data_player = reinterpret_cast<char*>(&player->stats);
@@ -258,11 +260,11 @@ void Game::EntitySpawn()
 	{
 		uint8_t random = rand() % 100;
 
-		if (random >= 95)
+		if (random >= 95) // 5%
 		{
 			entities.push_back(std::make_unique<Rare>(GetWindowSize(), entityLevel, &font));
 		}
-		else if (random >= 85)
+		else if (random >= 85) // 10%
 		{
 			entities.push_back(std::make_unique<Magic>(GetWindowSize(), entityLevel, &font));
 		}
