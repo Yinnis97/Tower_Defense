@@ -139,19 +139,22 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Pause.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Rare.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Tower.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Boss.h" />
     <ClInclude Include="Bullet.h" />
-    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="Magic.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Normal.h" />
     <ClInclude Include="Pause.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Rare.h" />
     <ClInclude Include="Rocket.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Sniper.h" />

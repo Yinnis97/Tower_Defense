@@ -6,7 +6,9 @@
 #include <SFML/Audio.hpp>
 #include "Entity.h"
 #include "Boss.h"
-#include "Enemy.h"
+#include "Normal.h"
+#include "Magic.h"
+#include "Rare.h"
 #include "Grid.h"
 #include "Player.h"
 #include "Menu.h"
@@ -16,7 +18,7 @@
 using namespace sf;
 
 #define SPAWN_INTERVAL 0.5
-#define LEVELUP_INTERVAL 5
+#define LEVELUP_INTERVAL 20
 
 struct DamageNumbers
 {

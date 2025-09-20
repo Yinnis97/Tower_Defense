@@ -258,15 +258,17 @@ void Game::EntitySpawn()
 	{
 		uint8_t random = rand() % 100;
 
-		switch (random)
+		if (random >= 95)
 		{
-		case 99:
-			entities.push_back(std::make_unique<Boss>(GetWindowSize(), entityLevel, &font));
-			break;
-		default:
-			entities.push_back(std::make_unique<Enemy>(GetWindowSize(), entityLevel, &font));
-
-			break;
+			entities.push_back(std::make_unique<Rare>(GetWindowSize(), entityLevel, &font));
+		}
+		else if (random >= 85)
+		{
+			entities.push_back(std::make_unique<Magic>(GetWindowSize(), entityLevel, &font));
+		}
+		else
+		{
+			entities.push_back(std::make_unique<Normal>(GetWindowSize(), entityLevel, &font));
 		}
 		spawninterval = 0.0f;
 	}
@@ -311,13 +313,21 @@ void Game::EntityHitDetection(size_t index)
 	{
 		switch (entities[index]->Entity_GetID())
 		{
-		case 'E':
-			player->stats.resources.copper = player->stats.resources.copper + 1;
+		case 'N':
+			player->stats.resources.copper += 1;
 			player->Player_UpdateLevel(10, GetWindowSize());
 			break;
+		case 'M':
+			player->stats.resources.silver += 1;
+			player->Player_UpdateLevel(50, GetWindowSize());
+			break;
+		case 'R':
+			player->stats.resources.gold += 1;
+			player->Player_UpdateLevel(200, GetWindowSize());
+			break;
 		case 'B':
-			player->stats.resources.gold = player->stats.resources.gold + 1;
-			player->stats.resources.copper = player->stats.resources.copper + 15;
+			player->stats.resources.gold += 1;
+			player->stats.resources.copper += 15;
 			player->Player_UpdateLevel(100, GetWindowSize());
 			break;
 		default:

@@ -57,40 +57,70 @@ void Entity::Entity_UpdateLevel(Vector2f windowsize)
 	// Up for change
 	maxhealth = basehealth * (level);
 	health = maxhealth;
-	std::cout << "Health : " << health << " / " << maxhealth << std::endl;
 }
 
 Vector2u Entity::Entity_DropLoot()
 {
-	if (ID == 'E')
-	{
-		uint16_t random = rand() % 10000;
+	uint8_t random = (rand() % 100) + 1; // 1 - 100
+	uint8_t amount = (rand() % 10) + 1; // 1 - 10
+	//std::cout << ID << "  " << static_cast<uint16_t>(random) << std::endl;
 
-		if(random <= 100)
+	if (ID == 'N') // Normal
+	{
+		if(random == 1) // 1%
 		{
-			uint8_t amount = (rand() % 10) + 1;
 			return { 2,amount };
 		}
-		else if (random <= 600)
+		else if (random <= 6) // 5%
 		{
-			uint8_t amount = (rand() % 10) + 1;
 			return { 3,amount };
 		}
-		else if (random <= 2600)
+		else if (random <= 26) // 20%
 		{
-			uint8_t amount = (rand() % 10) + 1;
 			return { 4,amount };
 		}
 
 		return { 0,0 };
 	}
-	else if (ID == 'B')
+	else if (ID == 'M') // Magic
 	{
-		uint8_t random = rand() % 100;
-		if (random <= 10)
+		if (random == 1) // 1%
 		{
-			uint8_t amount = (rand() % 10) + 1;
 			return { 1,amount };
+		}
+		else if (random <= 6) // 5%
+		{
+			return { 2,amount };
+		}
+		else if (random <= 26) // 20%
+		{
+			return { 3,amount };
+		}
+
+		return { 0,0 };
+	}
+	else if (ID == 'R') // Rare
+	{
+		if (random <= 20) // 20%
+		{
+			return { 1,amount };
+		}
+		else // 80%
+		{
+			return { 2,amount };
+		}
+
+		return { 0,0 };
+	}
+	else if (ID == 'B') // Boss
+	{
+		if (random <= 50) // 50%
+		{
+			return { 1,amount };
+		}
+		else // 50%
+		{
+			return { 2,amount };
 		}
 		return { 0,0 };
 	}
