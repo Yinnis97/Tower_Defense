@@ -15,6 +15,9 @@
 
 using namespace sf;
 
+#define SPAWN_INTERVAL 0.5
+#define LEVELUP_INTERVAL 5
+
 struct DamageNumbers
 {
 	std::optional<Text> text;
@@ -40,6 +43,8 @@ private:
 	Clock dt_clock;
 	float dt;
 	std::vector<DamageNumbers> dmgnumbers;
+	int entityLevel;
+	float levelupinterval;
 
 public:
 	bool loadGame;
@@ -72,6 +77,7 @@ public:
 	void RenderDmgNumbers();
 
 	void EntitySpawn();
+	void EntityLevelUp();
 	void EntityHitDetection(size_t index);
 	void EntityEscaped(size_t index);
 

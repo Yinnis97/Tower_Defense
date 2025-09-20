@@ -14,7 +14,7 @@ public:
 
     void Entity_InitSprite(Vector2f windowsize) override
     {
-        texture.loadFromFile("Textures/Boss.png");
+        static_cast<void>(texture.loadFromFile("Textures/Boss.png"));
         sprite.emplace(texture);
         auto x = windowsize.x / 2000;
         sprite->setOrigin({ sprite->getGlobalBounds().getCenter() });

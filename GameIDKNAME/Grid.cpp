@@ -21,13 +21,13 @@ Grid::~Grid()
 void Grid::Grid_Init(Vector2f windowsize)
 {
 	// Load Textures
-	turretTexture.loadFromFile("Textures/Turret.png");
-	sniperTexture.loadFromFile("Textures/Sniper.png");
-	rocketTexture.loadFromFile("Textures/Rocket.png");
+	static_cast<void>(turretTexture.loadFromFile("Textures/Turret.png"));
+	static_cast<void>(sniperTexture.loadFromFile("Textures/Sniper.png"));
+	static_cast<void>(rocketTexture.loadFromFile("Textures/Rocket.png"));
 
-	level1Texture.loadFromFile("Textures/Upgrade_lvl_1.png");
-	level10Texture.loadFromFile("Textures/Upgrade_lvl_10.png");
-	level100Texture.loadFromFile("Textures/Upgrade_lvl_100.png");
+	static_cast<void>(level1Texture.loadFromFile("Textures/Upgrade_lvl_1.png"));
+	static_cast<void>(level10Texture.loadFromFile("Textures/Upgrade_lvl_10.png"));
+	static_cast<void>(level100Texture.loadFromFile("Textures/Upgrade_lvl_100.png"));
 
 	// Background sandish
 	sand.setFillColor(Color::White);
@@ -142,13 +142,13 @@ void Grid::Grid_Init(Vector2f windowsize)
 
 void Grid::Grid_LoadShaders(Vector2f windowsize)
 {
-	sandshader.loadFromFile("Shaders/path.frag", Shader::Type::Fragment);
+	static_cast<void>(sandshader.loadFromFile("Shaders/path.frag", Shader::Type::Fragment));
 	sandshader.setUniform("resolution", windowsize);
-	grassshader.loadFromFile("Shaders/grass.frag", Shader::Type::Fragment);
+	static_cast<void>(grassshader.loadFromFile("Shaders/grass.frag", Shader::Type::Fragment));
 	grassshader.setUniform("resolution", windowsize);
-	towerplotshader.loadFromFile("Shaders/buildings.frag", Shader::Type::Fragment);
+	static_cast<void>(towerplotshader.loadFromFile("Shaders/buildings.frag", Shader::Type::Fragment));
 	towerplotshader.setUniform("resolution", section.getSize());
-	bottomsectionshader.loadFromFile("Shaders/buildarea.frag", Shader::Type::Fragment);
+	static_cast<void>(bottomsectionshader.loadFromFile("Shaders/buildarea.frag", Shader::Type::Fragment));
 	bottomsectionshader.setUniform("resolution", windowsize);
 }
 

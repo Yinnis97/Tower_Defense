@@ -20,7 +20,9 @@ void Game::Init_Var()
 	loadGame = false;
 	quit = false;
 	save = false;
+	entityLevel = 1;
 	entities.reserve(100);
+	levelupinterval = 0.f;
 
 	// Font
 	if (!font.openFromFile("Fonts/PixeloidSans.ttf"))
@@ -127,6 +129,9 @@ void Game::LoadGame()
 		data_player[i] ^= key;
 	}
 
+	// Set up entity stats
+	entityLevel = player->stats.entitystats.level;
+
 	// Place towers
 	for (size_t i = 0; i < TOWER_AMOUNT_; i++)
 	{
@@ -188,6 +193,9 @@ void Game::SaveGame()
 		player->stats.towerstats[i].towerlevel = grid->towers[i]->level;
 	}
 
+	// Get Entity stats
+	player->stats.entitystats.level = entityLevel;
+
 	// Treat as char*
 	char* data_player = reinterpret_cast<char*>(&player->stats);
 	size_t dataSize_player = sizeof(Stats);
@@ -246,21 +254,32 @@ void Game::EntitySpawn()
 {
 	spawninterval += dt;
 
-	if (spawninterval >= 0.5)
+	if (spawninterval >= SPAWN_INTERVAL)
 	{
 		uint8_t random = rand() % 100;
 
 		switch (random)
 		{
 		case 99:
-			entities.push_back(std::make_unique<Boss>(GetWindowSize(), 1, &font));
+			entities.push_back(std::make_unique<Boss>(GetWindowSize(), entityLevel, &font));
 			break;
 		default:
-			entities.push_back(std::make_unique<Boss>(GetWindowSize(), 1, &font));
+			entities.push_back(std::make_unique<Enemy>(GetWindowSize(), entityLevel, &font));
 
 			break;
 		}
 		spawninterval = 0.0f;
+	}
+}
+
+void Game::EntityLevelUp()
+{
+	levelupinterval += dt;
+
+	if (levelupinterval >= LEVELUP_INTERVAL)
+	{
+		entityLevel++;
+		levelupinterval = 0.0f;
 	}
 }
 
@@ -345,6 +364,7 @@ void Game::Update()
 	else
 	{
 		EntitySpawn();
+		EntityLevelUp();
 		UpdateDmgNumbers();
 
 		grid->Grid_Update(GetMousePos(), GetWindowSize(), dt, &player->stats);

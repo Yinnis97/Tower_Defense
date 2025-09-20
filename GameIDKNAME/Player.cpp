@@ -150,11 +150,9 @@ void Player::Player_UpdateLevel(uint32_t xpGained, Vector2f windowsize)
 
 	if (stats.xp >= stats.xpNeeded)
 	{
-		//stats.level = stats.level+200;
 		stats.level++;
 		stats.xp = 0;
 	}
-	std::cout << "XP: " << stats.xp << "Needed XP: " << stats.xpNeeded << "Level: " << stats.level << std::endl;
 
 	// XP bar
 	float t = float(stats.xp) / float(stats.xpNeeded);

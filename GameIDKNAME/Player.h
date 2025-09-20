@@ -33,6 +33,11 @@ struct Stats
 		bool towerplaced;
 		uint8_t towerlevel;
 	} towerstats[TOWER_AMOUNT_];
+
+	struct EntityStats
+	{
+		int level;
+	} entitystats;
 };
 
 class Player

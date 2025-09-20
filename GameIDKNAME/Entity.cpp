@@ -16,7 +16,8 @@ void Entity::Entity_Init(Vector2f windowsize, Font* font)
 	level_text.emplace(*font);
 	level_text->setCharacterSize(windowsize.x / 150);
 	level_text->setFillColor(lvltxtclr);
-	
+
+	Entity_UpdateLevel(windowsize);
 }
 
 int32_t Entity::Entity_GetHealth()
@@ -34,23 +35,29 @@ void Entity::Entity_TakeDmg(int32_t dmg)
     this->health = this->health - dmg;
 }
 
-void Entity::Entity_UpdateHealthBar(Vector2f windowsize)
+void Entity::Entity_UpdateUI(Vector2f windowsize)
 {
+	// Healthbar
 	float r = float(health) / float(maxhealth);
 	healthbar.setSize({ fullhealthbar.getSize().x * r, fullhealthbar.getSize().y });
 
 	fullhealthbar.setPosition({ sprite->getPosition().x,sprite->getPosition().y - (sprite->getGlobalBounds().size.y/1.7f) });
 	healthbar.setPosition(fullhealthbar.getPosition());
+
+	// Level
+	std::stringstream ss_lvl;
+	ss_lvl << level << std::endl;
+
+	level_text->setPosition({ fullhealthbar.getPosition().x + (fullhealthbar.getSize().x / 1.8f), fullhealthbar.getPosition().y });
+	level_text->setString(ss_lvl.str());
 }
 
 void Entity::Entity_UpdateLevel(Vector2f windowsize)
 {
-	//Add logic to increased level
-	std::stringstream ss_lvl;
-	ss_lvl << level << std::endl;
-
-	level_text->setPosition({ fullhealthbar.getPosition().x + (fullhealthbar.getSize().x/1.8f), fullhealthbar.getPosition().y});
-	level_text->setString(ss_lvl.str());
+	// Up for change
+	maxhealth = basehealth * (level);
+	health = maxhealth;
+	std::cout << "Health : " << health << " / " << maxhealth << std::endl;
 }
 
 Vector2u Entity::Entity_DropLoot()
@@ -90,6 +97,7 @@ Vector2u Entity::Entity_DropLoot()
 	else
 	{
 		std::cout << "Error Entity::DropLoot" << std::endl;
+		return { 0,0 };
 	}
 }
 
@@ -157,8 +165,7 @@ void Entity::Entity_Update(Vector2f windowsize, float dt)
 {
 	Entity_ChangeDirection(windowsize);
 	Entity_Move(windowsize, dt);
-	Entity_UpdateHealthBar(windowsize);
-	Entity_UpdateLevel(windowsize);
+	Entity_UpdateUI(windowsize);
 }
 
 void Entity::Entity_Render(RenderWindow* window)

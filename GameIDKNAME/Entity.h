@@ -11,12 +11,13 @@ class Entity
 private:
 	int32_t health;
 	int32_t maxhealth;
+	int32_t basehealth;
 	char ID;
 
 public:
 
 	Entity(const Vector2f windowsize, uint16_t lvl, int32_t hp, char type, Font* font)
-		: startpos(windowsize), level(lvl), health(hp), ID(type), direction(0), lastdir(6,false), ms(10), maxhealth(hp)
+		: startpos(windowsize), level(lvl), health(hp), ID(type), direction(0), lastdir(6,false), ms(10), maxhealth(hp), basehealth(hp)
 	{
 		Entity_Init(windowsize, font);
 	}
@@ -41,7 +42,7 @@ public:
 	char Entity_GetID();
 
 	void Entity_TakeDmg(int32_t dmg);
-	void Entity_UpdateHealthBar(Vector2f windowsize);
+	void Entity_UpdateUI(Vector2f windowsize);
 	void Entity_UpdateLevel(Vector2f windowsize);
 
 	Vector2u Entity_DropLoot();
