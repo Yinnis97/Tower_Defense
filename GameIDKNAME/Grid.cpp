@@ -75,19 +75,19 @@ void Grid::Grid_Init(Vector2f windowsize)
 
 	// Building squares
 	float k = 0;
-	for (size_t s = 0; s <= TOWER_AMOUNT; s++)
+	for (size_t s = 0; s <= _TOWER_AMOUNT; s++)
 	{
 		buildplot bottom;
 		bottom.build = false;
 		bottom.shape.setFillColor(Color::White);
-		bottom.shape.setSize({ windowsize.x/TOWER_SIZE, windowsize.x/TOWER_SIZE });
-		bottom.shape.setPosition({(windowsize.x/TOWER_START_POS)+k,windowsize.y - (windowsize.y/8)});
+		bottom.shape.setSize({ windowsize.x/_TOWER_SIZE, windowsize.x/_TOWER_SIZE });
+		bottom.shape.setPosition({(windowsize.x/_TOWER_START_POS)+k,windowsize.y - (windowsize.y/8)});
 		buildplots.push_back(bottom);
-		k = k + (windowsize.x / TOWER_SPACE);
+		k = k + (windowsize.x / _TOWER_SPACE);
 	}
 
 	// Tower Options
-	for (size_t s = 0; s < TOWER_TYPES; s++)
+	for (size_t s = 0; s < _TOWER_TYPES; s++)
 	{
 		RectangleShape option;
 		option.setOutlineColor(Color::Black);
@@ -113,7 +113,7 @@ void Grid::Grid_Init(Vector2f windowsize)
 	}
 
 	// Level Up Options
-	for (size_t s = 0; s < LEVEL_UP_OPTIONS; s++)
+	for (size_t s = 0; s < _LEVEL_UP_OPTIONS; s++)
 	{
 		RectangleShape leveloption;
 		leveloption.setOutlineColor(Color::Black);

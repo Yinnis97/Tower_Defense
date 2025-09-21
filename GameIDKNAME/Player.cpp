@@ -74,7 +74,7 @@ void Player::Player_Init(Vector2f windowsize, Font* font)
 	// Player Health
 	health_text.emplace(*font);
 	health_text->setCharacterSize(windowsize.x / 100);
-	health_text->setPosition({ (windowsize.x / STATS_POS_INDEX) * 11,windowsize.y - (windowsize.y / 40)});
+	health_text->setPosition({ (windowsize.x / _STATS_POS_INDEX) * 11,windowsize.y - (windowsize.y / 40)});
 	health_text->setFillColor(color_health);
 	health_text->setString(ss_health.str());
 

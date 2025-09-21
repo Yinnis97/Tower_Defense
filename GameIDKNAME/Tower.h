@@ -1,11 +1,6 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+#include "Globals.h"
 #include "Bullet.h"
-#include <iostream>
-#include <sstream> 
-#include "math.h"
-using namespace sf;
 
 class Tower
 {

@@ -1,5 +1,6 @@
 #pragma once
 #include "Tower.h"
+
 class Sniper :
     public Tower
 {

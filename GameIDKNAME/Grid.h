@@ -1,32 +1,11 @@
 #pragma once
-#include <iostream>
-#include "math.h"
-#include <SFML/Graphics.hpp>
+#include "Globals.h"
+
 #include "Tower.h"
 #include "Rocket.h"
 #include "Sniper.h"
 #include "Turret.h"
 #include "Player.h"
-
-using namespace sf;
-
-#define TOWER_AMOUNT		14
-#define TOWER_SIZE			30
-#define TOWER_START_POS		50
-#define TOWER_SPACE			14
-#define TOWER_TYPES			3
-#define LEVEL_UP_OPTIONS	3
-
-#define _TURRET_T_PRICE		10
-#define _ROCKET_T_PRICE		20
-#define _SNIPER_T_PRICE		30
-
-struct buildplot
-{
-	RectangleShape shape;
-	bool build;
-	char type;
-};
 
 class Grid
 {

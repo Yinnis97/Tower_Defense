@@ -1,10 +1,5 @@
 #pragma once
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <sstream> 
-using namespace sf;
-
+#include "Globals.h"
 
 class Entity
 {

@@ -1,11 +1,6 @@
 #pragma once
-#include <iostream>
-#include <sstream> 
-#include "math.h"
-#include <SFML/Graphics.hpp>
+#include "Globals.h"
 #include "Player.h"
-
-using namespace sf;
 
 class Settings
 {

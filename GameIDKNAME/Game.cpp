@@ -137,7 +137,7 @@ void Game::LoadGame()
 	bossspawninterval = player->stats.entitystats.bossspawninterval;
 
 	// Place towers
-	for (size_t i = 0; i < TOWER_AMOUNT_; i++)
+	for (size_t i = 0; i < _TOWER_AMOUNT; i++)
 	{
 		grid->buildplots[i].build = player->stats.towerstats[i].towerplaced;
 
@@ -184,7 +184,7 @@ void Game::SaveGame()
 	char key = 0xA5;
 	std::ofstream file("Saves/save.dat", std::ios::binary);
 
-	for (size_t i = 0; i < TOWER_AMOUNT; i++)
+	for (size_t i = 0; i < _TOWER_AMOUNT; i++)
 	{
 		player->stats.towerstats[i].towerplaced = grid->buildplots[i].build;
 	}
@@ -263,14 +263,14 @@ void Game::EntitySpawn()
 	if(!bossSpawned)
 		bossspawninterval += dt;
 
-	if (bossspawninterval >= BOSS_SPAWN_INTERVAL && !bossSpawned)
+	if (bossspawninterval >= _BOSS_SPAWN_INTERVAL && !bossSpawned)
 	{
 		entities.clear();
 		entities.push_back(std::make_unique<Boss>(GetWindowSize(), entityLevel, &font));
 		bossSpawned = true;
 		bossspawninterval = 0.f;
 	}
-	if (spawninterval >= SPAWN_INTERVAL && !bossSpawned)
+	if (spawninterval >= _SPAWN_INTERVAL && !bossSpawned)
 	{
 		uint8_t random = rand() % 100;
 
@@ -294,7 +294,7 @@ void Game::EntityLevelUp()
 {
 	levelupinterval += dt;
 
-	if (levelupinterval >= LEVELUP_INTERVAL)
+	if (levelupinterval >= _LEVELUP_INTERVAL)
 	{
 		entityLevel++;
 		levelupinterval = 0.0f;

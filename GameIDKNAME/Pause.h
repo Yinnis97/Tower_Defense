@@ -1,10 +1,5 @@
 #pragma once
-#include <iostream>
-#include <sstream> 
-#include "math.h"
-#include <SFML/Graphics.hpp>
-
-using namespace sf;
+#include "Globals.h"
 
 class Pause
 {

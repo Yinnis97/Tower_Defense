@@ -1,46 +1,5 @@
 #pragma once
-#include <iostream>
-#include <sstream> 
-#include "math.h"
-#include <SFML/Graphics.hpp>
-
-using namespace sf;
-#define STATS_POS_INDEX		12
-#define TOWER_AMOUNT_		14
-
-struct Stats
-{
-	uint32_t xp;
-	uint32_t xpNeeded;
-	uint16_t level;
-	int16_t health;
-
-	struct Resources
-	{
-		uint32_t gold;
-		uint32_t silver;
-		uint32_t copper;
-		uint32_t blue_sapphire;
-		uint32_t green_sapphire;
-		uint32_t yellow_sapphire;
-		uint32_t orange_sapphire;
-	} resources;
-
-	struct TowerStats
-	{
-		size_t index;
-		char type;
-		bool towerplaced;
-		uint8_t towerlevel;
-	} towerstats[TOWER_AMOUNT_];
-
-	struct EntityStats
-	{
-		int level;
-		float levelupinterval;
-		float bossspawninterval;
-	} entitystats;
-};
+#include "Globals.h"
 
 class Player
 {

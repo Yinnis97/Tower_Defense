@@ -1,9 +1,6 @@
 #pragma once
-#include <iostream>
-#include <fstream>
-#include "math.h"
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+#include "Globals.h"
+
 #include "Entity.h"
 #include "Boss.h"
 #include "Normal.h"
@@ -15,17 +12,6 @@
 #include "Settings.h"
 #include "Pause.h"
 
-using namespace sf;
-
-#define SPAWN_INTERVAL 0.8
-#define LEVELUP_INTERVAL 20
-#define BOSS_SPAWN_INTERVAL 40
-
-struct DamageNumbers
-{
-	std::optional<Text> text;
-	float dt = 0.0;
-};
 
 class Game
 {
