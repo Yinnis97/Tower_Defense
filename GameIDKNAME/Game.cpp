@@ -23,6 +23,9 @@ void Game::Init_Var()
 	entityLevel = 1;
 	entities.reserve(100);
 	levelupinterval = 0.f;
+	spawninterval = 0.f;
+	bossspawninterval = 0.f;
+	bossSpawned = false;
 
 	// Font
 	if (!font.openFromFile("Fonts/PixeloidSans.ttf"))
@@ -30,8 +33,7 @@ void Game::Init_Var()
 		std::cout << "Error: Can't load Font! -> Menu_Init" << std::endl;
 
 	}
-
-	spawninterval = 0.0f;
+	
 	dt = dt_clock.restart().asSeconds();
 }
 
@@ -132,6 +134,7 @@ void Game::LoadGame()
 	// Set up entity stats
 	entityLevel = player->stats.entitystats.level;
 	levelupinterval = player->stats.entitystats.levelupinterval;
+	bossspawninterval = player->stats.entitystats.bossspawninterval;
 
 	// Place towers
 	for (size_t i = 0; i < TOWER_AMOUNT_; i++)
@@ -197,6 +200,7 @@ void Game::SaveGame()
 	// Get Entity stats
 	player->stats.entitystats.level = entityLevel;
 	player->stats.entitystats.levelupinterval = levelupinterval;
+	player->stats.entitystats.bossspawninterval = bossspawninterval;
 
 	// Treat as char*
 	char* data_player = reinterpret_cast<char*>(&player->stats);
@@ -256,7 +260,17 @@ void Game::EntitySpawn()
 {
 	spawninterval += dt;
 
-	if (spawninterval >= SPAWN_INTERVAL)
+	if(!bossSpawned)
+		bossspawninterval += dt;
+
+	if (bossspawninterval >= BOSS_SPAWN_INTERVAL && !bossSpawned)
+	{
+		entities.clear();
+		entities.push_back(std::make_unique<Boss>(GetWindowSize(), entityLevel, &font));
+		bossSpawned = true;
+		bossspawninterval = 0.f;
+	}
+	if (spawninterval >= SPAWN_INTERVAL && !bossSpawned)
 	{
 		uint8_t random = rand() % 100;
 
@@ -328,9 +342,10 @@ void Game::EntityHitDetection(size_t index)
 			player->Player_UpdateLevel(200, GetWindowSize());
 			break;
 		case 'B':
-			player->stats.resources.gold += 1;
-			player->stats.resources.copper += 15;
-			player->Player_UpdateLevel(100, GetWindowSize());
+			player->stats.resources.gold += 10;
+			player->stats.resources.copper += 150;
+			player->Player_UpdateLevel(1000, GetWindowSize());
+			bossSpawned = false;
 			break;
 		default:
 			std::cout << "Error at switch case entities GetID\n";

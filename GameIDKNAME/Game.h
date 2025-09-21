@@ -19,6 +19,7 @@ using namespace sf;
 
 #define SPAWN_INTERVAL 0.8
 #define LEVELUP_INTERVAL 20
+#define BOSS_SPAWN_INTERVAL 40
 
 struct DamageNumbers
 {
@@ -32,9 +33,16 @@ class Game
 private:
 	RenderWindow *window;
 	VideoMode videomode;
-	std::vector<std::unique_ptr<Entity>> entities;
 	bool mouseheld;
+
+	std::vector<std::unique_ptr<Entity>> entities;
+	std::vector<DamageNumbers> dmgnumbers;
+	int entityLevel;
+
 	float spawninterval;
+	float levelupinterval;
+	float bossspawninterval;
+	bool bossSpawned;
 
 	Grid* grid;
 	Player* player;
@@ -44,9 +52,6 @@ private:
 
 	Clock dt_clock;
 	float dt;
-	std::vector<DamageNumbers> dmgnumbers;
-	int entityLevel;
-	float levelupinterval;
 
 public:
 	bool loadGame;

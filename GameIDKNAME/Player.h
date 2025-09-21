@@ -38,6 +38,7 @@ struct Stats
 	{
 		int level;
 		float levelupinterval;
+		float bossspawninterval;
 	} entitystats;
 };
 
